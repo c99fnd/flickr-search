@@ -1,7 +1,7 @@
 package com.fredde.flickrsearch.fragment;
 
 import com.fredde.flickrsearch.R;
-import com.fredde.flickrsearch.SearchListCallback;
+import com.fredde.flickrsearch.callbacks.SearchListCallback;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 /**
  * Displays a search widget and a list of search results. The start fragment of the application.
  */
-public class SearchFragment extends Fragment implements OnQueryTextListener {
+public class SearchPhotoFragment extends Fragment implements OnQueryTextListener {
 
     /**
      * Callback used to communicate with MainActivity.
@@ -35,7 +35,7 @@ public class SearchFragment extends Fragment implements OnQueryTextListener {
     /**
      * Constructor.
      */
-    public SearchFragment() {
+    public SearchPhotoFragment() {
     }
 
     @Override
@@ -47,7 +47,7 @@ public class SearchFragment extends Fragment implements OnQueryTextListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_search, container, false);
         return rootView;
     }
 

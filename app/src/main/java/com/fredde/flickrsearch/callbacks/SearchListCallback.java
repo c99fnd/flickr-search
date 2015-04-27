@@ -1,4 +1,4 @@
-package com.fredde.flickrsearch;
+package com.fredde.flickrsearch.callbacks;
 
 /**
  * Callback.
