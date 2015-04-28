@@ -7,7 +7,7 @@ import retrofit.http.Query;
 /**
  * Retrofit Service Interface
  */
-public interface PhotosService {
+public interface FlickrPhotosService {
 
     @GET("/rest/")
     void getPhotos(@Query("method") String method, @Query("api_key") String apiKey, @Query("tags")
