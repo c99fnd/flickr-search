@@ -37,14 +37,16 @@ public class PhotosSearchService extends IntentService {
 
     private static Map<String, String> sOptions = new HashMap<String, String>();
 
+    /**
+     * Options for service api.
+     */
     static {
-        sOptions.put("method",METHOD);
+        sOptions.put("method", METHOD);
         sOptions.put("api_key", KEY);
         sOptions.put("format", FORMAT);
         sOptions.put("per_page", "10");
         sOptions.put("nojsoncallback", "1");
     }
-
 
     /**
      * The flicker api service.
@@ -87,7 +89,7 @@ public class PhotosSearchService extends IntentService {
         FlickrResponse response = mApiService.getPhotos(sOptions, query);
         photos = response.holder.getPhotos();
 
-        Log.d("Fredde", "queryApi "+photos.length);
+        Log.d("Fredde", "queryApi " + photos.length);
     }
 }
 
