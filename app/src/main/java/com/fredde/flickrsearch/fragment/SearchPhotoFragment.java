@@ -59,7 +59,7 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
             mCallback = (SearchListCallback)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(
-                    activity.toString() + " must implement GoalsListCallback");
+                    activity.toString() + " must implement SearchListCallback");
         }
     }
 
@@ -87,7 +87,6 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        Log.d("Fredde", "onQueryTextChange");
         return false;
     }
 

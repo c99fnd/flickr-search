@@ -2,7 +2,9 @@ package com.fredde.flickrsearch;
 
 import com.fredde.flickrsearch.callbacks.SearchListCallback;
 import com.fredde.flickrsearch.fragment.SearchPhotoFragment;
+import com.fredde.flickrsearch.services.PhotosSearchService;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -34,6 +36,13 @@ public class MainActivity extends AppCompatActivity implements SearchListCallbac
 
     @Override
     public void onSearch(String query) {
-        Log.d("Fredde", "Query : "+query);
+        Log.d("FREDDE", "Query : "+query);
+
+        /* Create the Service Intent */
+        Intent msgIntent = new Intent(this, PhotosSearchService.class);
+
+        /* Store the query string as an extra. */
+        msgIntent.putExtra(PhotosSearchService.PARAM, query);
+        startService(msgIntent);
     }
 }

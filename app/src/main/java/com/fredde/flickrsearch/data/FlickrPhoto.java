@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Data representation of a photo.
  */
-public class PhotoItem implements Serializable {
+public class FlickrPhoto implements Serializable {
 
     /**
      * The id of this photo.
@@ -79,7 +79,7 @@ public class PhotoItem implements Serializable {
      * @param id The id to set.
      * @return this
      */
-    public PhotoItem setId(String id) {
+    public FlickrPhoto setId(String id) {
         mId = id;
         return this;
     }
@@ -99,7 +99,7 @@ public class PhotoItem implements Serializable {
      * @param owner id of the owner of the photo.
      * @return this.
      */
-    public PhotoItem setOwner(String owner) {
+    public FlickrPhoto setOwner(String owner) {
         mOwner = owner;
         return this;
     }
@@ -119,7 +119,7 @@ public class PhotoItem implements Serializable {
      * @param secret The secret to set
      * @return this.
      */
-    public PhotoItem setSecret(String secret) {
+    public FlickrPhoto setSecret(String secret) {
         mSecret = secret;
         return this;
     }
@@ -139,7 +139,7 @@ public class PhotoItem implements Serializable {
      * @param server The server to set.
      * @return this.
      */
-    public PhotoItem setServer(String server) {
+    public FlickrPhoto setServer(String server) {
         mServer = server;
         return this;
     }
@@ -159,7 +159,7 @@ public class PhotoItem implements Serializable {
      * @param farm The farm to set.
      * @return this
      */
-    public PhotoItem setFarm(String farm) {
+    public FlickrPhoto setFarm(String farm) {
         mFarm = farm;
         return this;
     }
@@ -179,7 +179,7 @@ public class PhotoItem implements Serializable {
      * @param title The title to set.
      * @return this.
      */
-    public PhotoItem setTitle(String title) {
+    public FlickrPhoto setTitle(String title) {
         mTitle = title;
         return this;
     }
@@ -199,7 +199,7 @@ public class PhotoItem implements Serializable {
      * @param isPublic 1 if public. 0 if not.
      * @return this.
      */
-    public PhotoItem setIsPublic(int isPublic) {
+    public FlickrPhoto setIsPublic(int isPublic) {
         mIsPublic = isPublic;
         return this;
     }
@@ -219,7 +219,7 @@ public class PhotoItem implements Serializable {
      * @param isFriend 1 if friend. 0 if not.
      * @return this.
      */
-    public PhotoItem setIsFriend(int isFriend) {
+    public FlickrPhoto setIsFriend(int isFriend) {
         mIsFriend = isFriend;
         return this;
     }
@@ -239,7 +239,7 @@ public class PhotoItem implements Serializable {
      * @param isFamily 1 if friend. 0 if not.
      * @return this.
      */
-    public PhotoItem setIsFamily(int isFamily) {
+    public FlickrPhoto setIsFamily(int isFamily) {
         mIsFamily = isFamily;
         return this;
     }
