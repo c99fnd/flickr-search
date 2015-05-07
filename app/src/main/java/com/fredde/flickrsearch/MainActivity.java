@@ -17,8 +17,7 @@ import io.realm.Realm;
 import io.realm.RealmChangeListener;
 
 
-public class MainActivity extends AppCompatActivity implements SearchListCallback,
-        RealmChangeListener {
+public class MainActivity extends AppCompatActivity implements SearchListCallback {
 
 
     private Realm mRealm;
@@ -32,9 +31,8 @@ public class MainActivity extends AppCompatActivity implements SearchListCallbac
                     .add(R.id.container, new SearchPhotoFragment()).commit();
         }
 
+        /* For debug purposes. */
         Realm.deleteRealmFile(getApplicationContext());
-        mRealm = Realm.getInstance(getApplicationContext());
-        mRealm.addChangeListener(this);
 
     }
 
@@ -51,8 +49,7 @@ public class MainActivity extends AppCompatActivity implements SearchListCallbac
 
 
     @Override
-    public void onListItemSelected() {
-
+    public void onListItemSelected(int position) {
     }
 
     @Override
@@ -63,13 +60,5 @@ public class MainActivity extends AppCompatActivity implements SearchListCallbac
         /* Store the query string as an extra. */
         msgIntent.putExtra(PhotosSearchService.PARAM, query);
         startService(msgIntent);
-    }
-
-    @Override
-    public void onChange() {
-        Log.d("FREDDE", "realm has changed");
-
-        List<FlickrPhoto> photos = mRealm.allObjects(FlickrPhoto.class);
-        Log.d("FREDDE", "photos" + photos.size());
     }
 }

@@ -1,7 +1,9 @@
 package com.fredde.flickrsearch.fragment;
 
 import com.fredde.flickrsearch.R;
+import com.fredde.flickrsearch.adapters.SearchResultAdapter;
 import com.fredde.flickrsearch.callbacks.SearchListCallback;
+import com.fredde.flickrsearch.data.FlickrPhoto;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,6 +18,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Displays a search widget and a list of search results. The start fragment of the application.
@@ -33,23 +42,14 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
     private SearchView mSearchView;
 
     /**
-     * Constructor.
+     * The list adapter feeding the list with search results.
      */
-    public SearchPhotoFragment() {
-    }
+    private ListAdapter mAdapter;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        return rootView;
-    }
+    /**
+     * Realm instance.
+     */
+    private Realm mRealm;
 
     @Override
     public void onAttach(Activity activity) {
@@ -62,6 +62,35 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
                     activity.toString() + " must implement SearchListCallback");
         }
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        mRealm = Realm.getInstance(getActivity().getApplicationContext());
+
+        RealmResults<FlickrPhoto> realmResults = mRealm.where(FlickrPhoto.class).findAll();
+
+        mAdapter = new SearchResultAdapter(getActivity().getApplicationContext(), realmResults,
+                true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_search, container, false);
+        ListView listView = (ListView)rootView.findViewById(R.id.search_list);
+
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mCallback.onListItemSelected(position);
+            }
+        });
+        listView.setAdapter(mAdapter);
+        return rootView;
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

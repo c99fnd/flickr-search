@@ -21,31 +21,26 @@ public class FlickrPhoto extends RealmObject implements Serializable {
     /**
      * Id for the owner of this photo.
      */
-    @SerializedName("owner")
     private String owner;
 
     /**
      * Secret.
      */
-    @SerializedName("secret")
     private String secret;
 
     /**
      * Server
      */
-    @SerializedName("server")
     private String server;
 
     /**
      * Farm.
      */
-    @SerializedName("farm")
     private String farm;
 
     /**
      * Title of this photo.
      */
-    @SerializedName("title")
     private String title;
 
     /**
