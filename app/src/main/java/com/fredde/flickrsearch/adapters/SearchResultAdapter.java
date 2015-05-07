@@ -1,12 +1,15 @@
 package com.fredde.flickrsearch.adapters;
 
+import com.fredde.flickrsearch.FlickrUrlBuilder;
 import com.fredde.flickrsearch.R;
 import com.fredde.flickrsearch.data.FlickrPhoto;
+import com.squareup.picasso.Picasso;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -20,6 +23,7 @@ public class SearchResultAdapter extends RealmBaseAdapter<FlickrPhoto> implement
 
     private static class ViewHolder {
         TextView textView;
+        ImageView imageView;
     }
 
     ;
@@ -44,14 +48,15 @@ public class SearchResultAdapter extends RealmBaseAdapter<FlickrPhoto> implement
         if (convertView == null){
             convertView = inflater.inflate(R.layout.search_list_item, parent, false);
             holder = new ViewHolder();
-            holder.textView = (TextView)convertView.findViewById(R.id.search_list_item_name);
+           // holder.textView = (TextView)convertView.findViewById(R.id.search_list_item_name);
+            holder.imageView = (ImageView)convertView.findViewById(R.id.search_list_item_image);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder)convertView.getTag();
         }
         FlickrPhoto photo = realmResults.get(position);
-        holder.textView.setText(photo.getTitle());
-
+        //holder.textView.setText(photo.getTitle());
+        Picasso.with(context).load(FlickrUrlBuilder.buildUrl(photo)).into(holder.imageView);
         return convertView;
     }
 }

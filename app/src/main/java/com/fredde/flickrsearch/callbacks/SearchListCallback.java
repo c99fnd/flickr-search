@@ -8,9 +8,9 @@ public interface SearchListCallback {
     /**
      * Called when a list item is selected.
      *
-     * @param position position of the item that was selected.
+     * @param id The id of the item that was selected.
      */
-    public void onListItemSelected(int position);
+    public void onListItemSelected(String id);
 
     /**
      * Called when the SearchView is used.
