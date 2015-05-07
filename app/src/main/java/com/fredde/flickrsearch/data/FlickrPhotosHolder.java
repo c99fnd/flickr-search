@@ -2,6 +2,8 @@ package com.fredde.flickrsearch.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Holder for flickr photos.
  */
@@ -20,7 +22,7 @@ public class FlickrPhotosHolder {
     private String mTotal;
 
     @SerializedName("photo")
-    private FlickrPhoto[] mPhotos;
+    private List<FlickrPhoto> mPhotos;
 
     @SerializedName("stat")
     private String mStat;
@@ -29,8 +31,8 @@ public class FlickrPhotosHolder {
      *
      * @return
      */
-    public FlickrPhoto[] getPhotos() {
-        return mPhotos != null ? mPhotos.clone() : new FlickrPhoto[0];
+    public List<FlickrPhoto> getPhotos() {
+        return mPhotos;
     }
 
     /**

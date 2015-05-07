@@ -4,64 +4,67 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Data representation of a photo.
  */
-public class FlickrPhoto implements Serializable {
+public class FlickrPhoto extends RealmObject implements Serializable {
 
     /**
      * The id of this photo.
      */
-    @SerializedName("id")
-    private String mId;
+    @PrimaryKey
+    private String id;
 
     /**
      * Id for the owner of this photo.
      */
     @SerializedName("owner")
-    private String mOwner;
+    private String owner;
 
     /**
      * Secret.
      */
     @SerializedName("secret")
-    private String mSecret;
+    private String secret;
 
     /**
      * Server
      */
     @SerializedName("server")
-    private String mServer;
+    private String server;
 
     /**
      * Farm.
      */
     @SerializedName("farm")
-    private String mFarm;
+    private String farm;
 
     /**
      * Title of this photo.
      */
     @SerializedName("title")
-    private String mTitle;
+    private String title;
 
     /**
      * A public photo?
      */
     @SerializedName("ispublic")
-    private int mIsPublic;
+    private int isPublic;
 
     /**
      * Is photo owner a friend?
      */
     @SerializedName("isfriend")
-    private int mIsFriend;
+    private int isFriend;
 
     /**
      * Is photo owner a family member?
      */
     @SerializedName("isfamily")
-    private int mIsFamily;
+    private int isFamily;
 
 
     /**
@@ -70,38 +73,34 @@ public class FlickrPhoto implements Serializable {
      * @return The id.
      */
     public String getId() {
-        return mId;
+        return id;
     }
 
     /**
      * Set photo id.
      *
      * @param id The id to set.
-     * @return this
      */
-    public FlickrPhoto setId(String id) {
-        mId = id;
-        return this;
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
      * Gets the id of the photo owner.
      *
-     * @return this.
+     * @return the owner.
      */
     public String getOwner() {
-        return mOwner;
+        return owner;
     }
 
     /**
      * Sets id of the photo owner.
      *
      * @param owner id of the owner of the photo.
-     * @return this.
      */
-    public FlickrPhoto setOwner(String owner) {
-        mOwner = owner;
-        return this;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     /**
@@ -110,7 +109,7 @@ public class FlickrPhoto implements Serializable {
      * @return The secret.
      */
     public String getSecret() {
-        return mSecret;
+        return secret;
     }
 
     /**
@@ -119,9 +118,8 @@ public class FlickrPhoto implements Serializable {
      * @param secret The secret to set
      * @return this.
      */
-    public FlickrPhoto setSecret(String secret) {
-        mSecret = secret;
-        return this;
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 
     /**
@@ -130,18 +128,16 @@ public class FlickrPhoto implements Serializable {
      * @return The server
      */
     public String getServer() {
-        return mServer;
+        return server;
     }
 
     /**
      * Set the server
      *
      * @param server The server to set.
-     * @return this.
      */
-    public FlickrPhoto setServer(String server) {
-        mServer = server;
-        return this;
+    public void setServer(String server) {
+        this.server = server;
     }
 
     /**
@@ -150,18 +146,16 @@ public class FlickrPhoto implements Serializable {
      * @return the farm.
      */
     public String getFarm() {
-        return mFarm;
+        return farm;
     }
 
     /**
      * Sets the farm for this photo.
      *
      * @param farm The farm to set.
-     * @return this
      */
-    public FlickrPhoto setFarm(String farm) {
-        mFarm = farm;
-        return this;
+    public void setFarm(String farm) {
+        this.farm = farm;
     }
 
     /**
@@ -170,18 +164,16 @@ public class FlickrPhoto implements Serializable {
      * @return The tile of the goal.
      */
     public String getTitle() {
-        return mTitle;
+        return title;
     }
 
     /**
      * Sets goal tile.
      *
      * @param title The title to set.
-     * @return this.
      */
-    public FlickrPhoto setTitle(String title) {
-        mTitle = title;
-        return this;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     /**
@@ -190,18 +182,16 @@ public class FlickrPhoto implements Serializable {
      * @return 1 if public. 0 if not.
      */
     public int getIsPublic() {
-        return mIsPublic;
+        return isPublic;
     }
 
     /**
      * Sets if this photo is public or not.
      *
      * @param isPublic 1 if public. 0 if not.
-     * @return this.
      */
-    public FlickrPhoto setIsPublic(int isPublic) {
-        mIsPublic = isPublic;
-        return this;
+    public void setIsPublic(int isPublic) {
+        this.isPublic = isPublic;
     }
 
     /**
@@ -210,18 +200,16 @@ public class FlickrPhoto implements Serializable {
      * @return 1 if owner is a friend. 0 if not.
      */
     public int getIsFriend() {
-        return mIsFriend;
+        return isFriend;
     }
 
     /**
      * Sets if this photo owner is a friend or not.
      *
      * @param isFriend 1 if friend. 0 if not.
-     * @return this.
      */
-    public FlickrPhoto setIsFriend(int isFriend) {
-        mIsFriend = isFriend;
-        return this;
+    public void setIsFriend(int isFriend) {
+        this.isFriend = isFriend;
     }
 
     /**
@@ -230,17 +218,15 @@ public class FlickrPhoto implements Serializable {
      * @return 1 if owner is a family member. 0 if not.
      */
     public int getIsFamily() {
-        return mIsFamily;
+        return isFamily;
     }
 
     /**
      * Sets if this photo owner is a family member or not.
      *
      * @param isFamily 1 if friend. 0 if not.
-     * @return this.
      */
-    public FlickrPhoto setIsFamily(int isFamily) {
-        mIsFamily = isFamily;
-        return this;
+    public void setIsFamily(int isFamily) {
+        this.isFamily = isFamily;
     }
 }
