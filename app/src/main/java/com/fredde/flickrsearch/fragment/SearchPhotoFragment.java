@@ -71,7 +71,7 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
         /* Clear the search view if its already been set up. */
         clearSearchView();
 
-        /* Find and setup the SearchView */
+        /* Find and setup the SearchView. */
         MenuItem item = menu.findItem(R.id.action_search);
         mSearchView = (SearchView)item.getActionView();
         mSearchView.setQueryHint(getResources().getString(R.string.action_search));
@@ -90,6 +90,9 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
         return false;
     }
 
+    /**
+     * Clears the SearchView by setting its  OnQueryListener to null.
+     */
     private void clearSearchView() {
         if (mSearchView != null) {
             mSearchView.setOnQueryTextListener(null);
