@@ -1,23 +1,34 @@
 package com.fredde.flickrsearch;
 
 import com.fredde.flickrsearch.callbacks.SearchListCallback;
+import com.fredde.flickrsearch.data.FlickrPhoto;
 import com.fredde.flickrsearch.fragment.FullscreenPhotoFragment;
 import com.fredde.flickrsearch.fragment.SearchPhotoFragment;
 import com.fredde.flickrsearch.services.PhotosSearchService;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.Visibility;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+
+import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 
 
 public class MainActivity extends AppCompatActivity implements SearchListCallback {
 
     private static final String SEARCH_LIST_TAG = "searchListFragment";
     private static final String FULLSCREEN_TAG = "fullscreenFragment";
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,10 +37,6 @@ public class MainActivity extends AppCompatActivity implements SearchListCallbac
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new SearchPhotoFragment(), SEARCH_LIST_TAG).commit();
         }
-
-        /* For debug purposes. */
-        Realm.deleteRealmFile(getApplicationContext());
-
     }
 
     @Override
@@ -54,7 +61,11 @@ public class MainActivity extends AppCompatActivity implements SearchListCallbac
             frag.setArguments(args);
         } else {
             frag = new FullscreenPhotoFragment();
-
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                frag.setEnterTransition(new Fade(Visibility.MODE_IN));
+                frag.setExitTransition(new Fade(Visibility.MODE_OUT));
+                frag.setAllowEnterTransitionOverlap(true);
+            }
             frag.setArguments(args);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, frag, FULLSCREEN_TAG).addToBackStack(null).commit();

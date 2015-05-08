@@ -9,8 +9,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +24,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.util.List;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -29,6 +33,11 @@ import io.realm.RealmResults;
  * Displays a search widget and a list of search results. The start fragment of the application.
  */
 public class SearchPhotoFragment extends Fragment implements OnQueryTextListener {
+
+    /**
+     * Used when reading and writing the latest query to shared prefs.
+     */
+    public static final String LATEST_QUERY = "LatestQuery";
 
     /**
      * Callback used to communicate with MainActivity.
@@ -50,6 +59,11 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
      */
     private Realm mRealm;
 
+    /**
+     * Keep the latest query string.
+     */
+    private String mLastestQuery;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -68,15 +82,14 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
         setHasOptionsMenu(true);
         mRealm = Realm.getInstance(getActivity().getApplicationContext());
 
-        RealmResults<FlickrPhoto> realmResults = mRealm.where(FlickrPhoto.class).findAll();
-
-        mAdapter = new SearchResultAdapter(getActivity().getApplicationContext(), realmResults,
-                true);
+        RealmResults<FlickrPhoto> data = getStartupDataFromRealm();
+        mAdapter = new SearchResultAdapter(getActivity().getApplicationContext(), data, true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
         ListView listView = (ListView)rootView.findViewById(R.id.search_list);
 
@@ -92,9 +105,15 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         mRealm.close();
+        mAdapter = null;
     }
 
     @Override
@@ -114,8 +133,10 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        mLastestQuery = query;
         mSearchView.clearFocus();
         mCallback.onSearch(query);
+
         return true;
     }
 
@@ -131,5 +152,17 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
         if (mSearchView != null) {
             mSearchView.setOnQueryTextListener(null);
         }
+    }
+
+    public RealmResults<FlickrPhoto> getStartupDataFromRealm() {
+        Log.d("FREDDE","mLastestQuery "+mLastestQuery);
+
+        RealmResults<FlickrPhoto> res;
+        if (mLastestQuery != null) {
+            res = mRealm.where(FlickrPhoto.class).equalTo("tag", mLastestQuery).findAll();
+        } else {
+            res = mRealm.where(FlickrPhoto.class).findAll();
+        }
+        return res;
     }
 }

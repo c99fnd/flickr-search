@@ -7,6 +7,7 @@ import com.squareup.picasso.Picasso;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ public class FullscreenPhotoFragment extends Fragment {
         String id = getArguments().getString(ARG_ITEM);
         ImageView imageView = (ImageView)rootView.findViewById(R.id.fullscreen_view_image);
         setFullscreenImage(imageView, id);
-
+        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
         return rootView;
     }
