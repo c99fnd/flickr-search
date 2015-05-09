@@ -1,5 +1,5 @@
 .gradle
 .idea
 build/
-*.iml
+flickr-search.iml
 local.properties
