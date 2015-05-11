@@ -44,6 +44,11 @@ public class FlickrPhoto extends RealmObject implements Serializable {
     private String title;
 
     /**
+     * Tags for this photo.
+     */
+    private String tags;
+
+    /**
      * A public photo?
      */
     @SerializedName("ispublic")
@@ -223,5 +228,23 @@ public class FlickrPhoto extends RealmObject implements Serializable {
      */
     public void setIsFamily(int isFamily) {
         this.isFamily = isFamily;
+    }
+
+    /**
+     * Returns the tags for this photo.
+     *
+     * @return A string containing tags.
+     */
+    public String getTags() {
+        return tags;
+    }
+
+    /**
+     * Sets the tags for this photo.
+     *
+     * @param tags Tags to set.
+     */
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }

@@ -37,7 +37,7 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
     /**
      * Shared Prefs key.
      */
-    private static final String SEARCH_STRING_KEY = "search_string" ;
+    private static final String SEARCH_STRING_KEY = "search_string";
 
     /**
      * Callback used to communicate with MainActivity.
@@ -69,7 +69,7 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
         super.onAttach(activity);
 
         try {
-            mCallback = (SearchListCallback) activity;
+            mCallback = (SearchListCallback)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(
                     activity.toString() + " must implement SearchListCallback");
@@ -84,20 +84,21 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
 
         String search = readSearchStringFromPrefs();
         RealmResults<FlickrPhoto> data = getStartupDataFromRealm(search);
+
         mAdapter = new SearchResultAdapter(getActivity().getApplicationContext(), data, true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+            Bundle savedInstanceState) {
+        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        ListView listView = (ListView) rootView.findViewById(R.id.search_list);
+        ListView listView = (ListView)rootView.findViewById(R.id.search_list);
 
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FlickrPhoto photo = (FlickrPhoto) mAdapter.getItem(position);
+                FlickrPhoto photo = (FlickrPhoto)mAdapter.getItem(position);
                 mCallback.onListItemSelected(photo.getId());
             }
         });
@@ -127,7 +128,7 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
 
         /* Find and setup the SearchView. */
         MenuItem item = menu.findItem(R.id.action_search);
-        mSearchView = (SearchView) item.getActionView();
+        mSearchView = (SearchView)item.getActionView();
         mSearchView.setQueryHint(getResources().getString(R.string.action_search));
         mSearchView.setOnQueryTextListener(this);
     }
@@ -162,21 +163,23 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
      * @return RealmResults.
      */
     private RealmResults<FlickrPhoto> getStartupDataFromRealm(@Nullable String query) {
-        Log.d("FREDDE", "string " + query);
         RealmResults<FlickrPhoto> res;
         if (query != null) {
-            res = mRealm.where(FlickrPhoto.class).equalTo("tags", query).findAll();
+            res = mRealm.where(FlickrPhoto.class).equalTo("title", query).findAll();
         } else {
             res = mRealm.where(FlickrPhoto.class).findAll();
         }
+
+        Log.d("FREDDE","res size"+res.size());
         return res;
     }
 
     /**
+     * Stores the given string to a pre defined key in shared prefs.
      *
-     * @param string
+     * @param string the string to store.
      */
-    private void writeSearchStringInPrefs(String string){
+    private void writeSearchStringInPrefs(String string) {
         SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString(SEARCH_STRING_KEY, string);
@@ -184,10 +187,11 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
     }
 
     /**
+     * Reads a string from a given key in shared prefs.
      *
-     * @return
+     * @return The string read.
      */
-    private String readSearchStringFromPrefs(){
+    private String readSearchStringFromPrefs() {
         SharedPreferences settings = getActivity().getPreferences(Context.MODE_PRIVATE);
         return settings.getString(SEARCH_STRING_KEY, null);
     }

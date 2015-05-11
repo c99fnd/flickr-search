@@ -43,7 +43,7 @@ public class PhotosSearchService extends IntentService {
 
     private static final String FORMAT = "json";
 
-    private final static String PER_PAGE = "20";
+    private final static String PER_PAGE = "10";
 
     private static Map<String, String> sOptions = new HashMap<String, String>();
 
@@ -113,6 +113,9 @@ public class PhotosSearchService extends IntentService {
         List<FlickrPhoto> photos;
         FlickrResponse response = mApiService.getPhotos(sOptions, query);
         photos = response.holder.getPhotos();
+        for (int i = 0; i < photos.size() ;i++ ){
+            photos.get(i).setTags(query);
+        }
 
         Realm realm = Realm.getInstance(getApplicationContext());
         realm.beginTransaction();
