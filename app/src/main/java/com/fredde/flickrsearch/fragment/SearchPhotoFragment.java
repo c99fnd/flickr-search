@@ -1,11 +1,8 @@
 package com.fredde.flickrsearch.fragment;
 
-import com.fredde.flickrsearch.R;
-import com.fredde.flickrsearch.adapters.SearchResultAdapter;
-import com.fredde.flickrsearch.callbacks.SearchListCallback;
-import com.fredde.flickrsearch.data.FlickrPhoto;
-
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,7 +21,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import java.util.List;
+import com.fredde.flickrsearch.R;
+import com.fredde.flickrsearch.adapters.SearchResultAdapter;
+import com.fredde.flickrsearch.callbacks.SearchListCallback;
+import com.fredde.flickrsearch.data.FlickrPhoto;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -35,9 +35,9 @@ import io.realm.RealmResults;
 public class SearchPhotoFragment extends Fragment implements OnQueryTextListener {
 
     /**
-     * Used when reading and writing the latest query to shared prefs.
+     * Shared Prefs key.
      */
-    public static final String LATEST_QUERY = "LatestQuery";
+    private static final String SEARCH_STRING_KEY = "search_string" ;
 
     /**
      * Callback used to communicate with MainActivity.
@@ -69,7 +69,7 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
         super.onAttach(activity);
 
         try {
-            mCallback = (SearchListCallback)activity;
+            mCallback = (SearchListCallback) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(
                     activity.toString() + " must implement SearchListCallback");
@@ -82,21 +82,22 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
         setHasOptionsMenu(true);
         mRealm = Realm.getInstance(getActivity().getApplicationContext());
 
-        RealmResults<FlickrPhoto> data = getStartupDataFromRealm();
+        String search = readSearchStringFromPrefs();
+        RealmResults<FlickrPhoto> data = getStartupDataFromRealm(search);
         mAdapter = new SearchResultAdapter(getActivity().getApplicationContext(), data, true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+                             Bundle savedInstanceState) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        ListView listView = (ListView)rootView.findViewById(R.id.search_list);
+        ListView listView = (ListView) rootView.findViewById(R.id.search_list);
 
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FlickrPhoto photo = (FlickrPhoto)mAdapter.getItem(position);
+                FlickrPhoto photo = (FlickrPhoto) mAdapter.getItem(position);
                 mCallback.onListItemSelected(photo.getId());
             }
         });
@@ -126,14 +127,14 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
 
         /* Find and setup the SearchView. */
         MenuItem item = menu.findItem(R.id.action_search);
-        mSearchView = (SearchView)item.getActionView();
+        mSearchView = (SearchView) item.getActionView();
         mSearchView.setQueryHint(getResources().getString(R.string.action_search));
         mSearchView.setOnQueryTextListener(this);
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        mLastestQuery = query;
+        writeSearchStringInPrefs(query);
         mSearchView.clearFocus();
         mCallback.onSearch(query);
 
@@ -154,15 +155,40 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
         }
     }
 
-    public RealmResults<FlickrPhoto> getStartupDataFromRealm() {
-        Log.d("FREDDE","mLastestQuery "+mLastestQuery);
-
+    /**
+     * Retrieves data from realm.
+     *
+     * @param query The query to use or null if all data is supposed to be fetched.
+     * @return RealmResults.
+     */
+    private RealmResults<FlickrPhoto> getStartupDataFromRealm(@Nullable String query) {
+        Log.d("FREDDE", "string " + query);
         RealmResults<FlickrPhoto> res;
-        if (mLastestQuery != null) {
-            res = mRealm.where(FlickrPhoto.class).equalTo("tag", mLastestQuery).findAll();
+        if (query != null) {
+            res = mRealm.where(FlickrPhoto.class).equalTo("tags", query).findAll();
         } else {
             res = mRealm.where(FlickrPhoto.class).findAll();
         }
         return res;
+    }
+
+    /**
+     *
+     * @param string
+     */
+    private void writeSearchStringInPrefs(String string){
+        SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(SEARCH_STRING_KEY, string);
+        editor.commit();
+    }
+
+    /**
+     *
+     * @return
+     */
+    private String readSearchStringFromPrefs(){
+        SharedPreferences settings = getActivity().getPreferences(Context.MODE_PRIVATE);
+        return settings.getString(SEARCH_STRING_KEY, null);
     }
 }
