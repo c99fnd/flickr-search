@@ -165,7 +165,7 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
     private RealmResults<FlickrPhoto> getStartupDataFromRealm(@Nullable String query) {
         RealmResults<FlickrPhoto> res;
         if (query != null) {
-            res = mRealm.where(FlickrPhoto.class).equalTo("title", query).findAll();
+            res = mRealm.where(FlickrPhoto.class).contains("tags", query).findAll();
         } else {
             res = mRealm.where(FlickrPhoto.class).findAll();
         }
