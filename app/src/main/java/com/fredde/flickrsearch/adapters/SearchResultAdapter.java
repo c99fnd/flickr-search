@@ -1,6 +1,5 @@
 package com.fredde.flickrsearch.adapters;
 
-import com.fredde.flickrsearch.FlickrUrlBuilder;
 import com.fredde.flickrsearch.R;
 import com.fredde.flickrsearch.data.FlickrPhoto;
 import com.squareup.picasso.Picasso;
@@ -8,7 +7,6 @@ import com.squareup.picasso.Picasso;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
@@ -56,7 +54,7 @@ public class SearchResultAdapter extends RealmBaseAdapter<FlickrPhoto> implement
         }
         FlickrPhoto photo = realmResults.get(position);
         //holder.textView.setText(photo.getTitle());
-        Picasso.with(context).load(FlickrUrlBuilder.buildUrl(photo)).into(holder.imageView);
+        Picasso.with(context).load(photo.getUrl()).into(holder.imageView);
         return convertView;
     }
 }

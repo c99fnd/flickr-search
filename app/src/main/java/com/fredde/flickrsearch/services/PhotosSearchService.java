@@ -1,8 +1,8 @@
 package com.fredde.flickrsearch.services;
 
+import com.fredde.flickrsearch.FlickrUrlBuilder;
 import com.fredde.flickrsearch.api.FlickrApiService;
 import com.fredde.flickrsearch.data.FlickrPhoto;
-import com.fredde.flickrsearch.data.FlickrPhotosHolder;
 import com.fredde.flickrsearch.data.FlickrResponse;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -12,7 +12,6 @@ import com.google.gson.GsonBuilder;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -55,6 +54,7 @@ public class PhotosSearchService extends IntentService {
         sOptions.put("api_key", KEY);
         sOptions.put("format", FORMAT);
         sOptions.put("per_page", PER_PAGE);
+        sOptions.put("extras","tags");
         sOptions.put("nojsoncallback", "1");
     }
 
@@ -114,7 +114,7 @@ public class PhotosSearchService extends IntentService {
         FlickrResponse response = mApiService.getPhotos(sOptions, query);
         photos = response.holder.getPhotos();
         for (int i = 0; i < photos.size() ;i++ ){
-            photos.get(i).setTags(query);
+            photos.get(i).setUrl(FlickrUrlBuilder.buildUrl(photos.get(i)));
         }
 
         Realm realm = Realm.getInstance(getApplicationContext());

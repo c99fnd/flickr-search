@@ -17,7 +17,8 @@ public interface FlickrApiService {
     @GET("/rest")
     void getPhotos(@Query("method") String method, @Query("api_key") String apiKey,
             @Query("tags") String tags, @Query("per_page") String perPage,
-            @Query("format") String format, Callback<FlickrResponse> response);
+            @Query("format") String format, @Query("extras") String extras,
+            Callback<FlickrResponse> response);
 
 
     @GET("/rest")
