@@ -32,30 +32,50 @@ public class PhotosSearchService extends IntentService {
 
     public static final String PARAM = "query_string";
 
-    private static final String ENDPOINT = "https://api.flickr.com/services";
+    private static final String NAME = "PhotoSearchService";
 
-    private static final String METHOD = "flickr.photos.search";
+    /* Flickr service API option keys */
+    private final static String METHOD_KEY = "method";
 
-    private final static String KEY = "554ac5cebce4acd585f48e6255982909";
+    private final static String API_KEY_KEY = "api_key";
+
+    private final static String FORMAT_KEY = "format";
+
+    private final static String PER_PAGE_KEY = "per_page";
+
+    private final static String EXTRAS_KEY = "extras";
+
+    private final static String CALLBACK_KEY = "nojsoncallback";
+
+
+    /* Flickr Service API option values. */
+    private final static String METHOD_VALUE = "flickr" + ".photos.search";
+
+    private final static String API_KEY_VALUE = "554ac5cebce4acd585f48e6255982909";
+
+    private final static String FORMAT_VALUE = "json";
+
+    private final static String PER_PAGE_VALUE = "10";
+
+    private final static String EXTRAS_VALUE = "tags";
+
+    private final static String CALLBACK_VALUE = "1";
+
 
     private final static String SECRET = "1df6db5425b75cc4";
 
-    private static final String FORMAT = "json";
-
-    private final static String PER_PAGE = "10";
-
+    /**
+     * Options map for the Flickr Service API.
+     */
     private static Map<String, String> sOptions = new HashMap<String, String>();
 
-    /**
-     * Options for service api.
-     */
     static {
-        sOptions.put("method", METHOD);
-        sOptions.put("api_key", KEY);
-        sOptions.put("format", FORMAT);
-        sOptions.put("per_page", PER_PAGE);
-        sOptions.put("extras","tags");
-        sOptions.put("nojsoncallback", "1");
+        sOptions.put(METHOD_KEY, METHOD_VALUE);
+        sOptions.put(API_KEY_KEY, API_KEY_VALUE);
+        sOptions.put(FORMAT_KEY, FORMAT_VALUE);
+        sOptions.put(PER_PAGE_KEY, PER_PAGE_VALUE);
+        sOptions.put(EXTRAS_KEY, EXTRAS_VALUE);
+        sOptions.put(CALLBACK_KEY, CALLBACK_VALUE);
     }
 
     /**
@@ -68,7 +88,7 @@ public class PhotosSearchService extends IntentService {
      * Creates an IntentService.
      */
     public PhotosSearchService() {
-        super("PhotoSearchService");
+        super(NAME);
 
         /* Create a new Gson object adapted to RealmObject class */
         Gson gson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
@@ -83,8 +103,8 @@ public class PhotosSearchService extends IntentService {
             }
         }).create();
 
-        RestAdapter adapter = new Builder().setEndpoint(ENDPOINT).setLogLevel(LogLevel.FULL)
-                .setConverter(new GsonConverter(gson)).build();
+        RestAdapter adapter = new Builder().setEndpoint(FlickrApiService.ENDPOINT)
+                .setLogLevel(LogLevel.FULL).setConverter(new GsonConverter(gson)).build();
         mApiService = adapter.create(FlickrApiService.class);
     }
 
@@ -113,11 +133,12 @@ public class PhotosSearchService extends IntentService {
         List<FlickrPhoto> photos;
         FlickrResponse response = mApiService.getPhotos(sOptions, query);
         photos = response.holder.getPhotos();
-        for (int i = 0; i < photos.size() ;i++ ){
+        for (int i = 0; i < photos.size(); i++) {
             photos.get(i).setUrl(FlickrUrlBuilder.buildUrl(photos.get(i)));
         }
 
         Realm realm = Realm.getInstance(getApplicationContext());
+
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(photos);
         realm.commitTransaction();

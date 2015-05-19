@@ -15,7 +15,7 @@ public class FlickrUrlBuilder {
 
     private final static String JPG = ".jpg";
 
-    private final static String QUALITY_M = "m";
+    private final static String DEFAULT_SIZE = "m";
 
 
     /**
@@ -46,7 +46,7 @@ public class FlickrUrlBuilder {
      * @return
      */
     public static String buildUrl(FlickrPhoto photo, PhotoSize size){
-        // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+        // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_{size}.jpg
         String farm = photo.getFarm();
         String server = photo.getServer();
         String id = photo.getId();

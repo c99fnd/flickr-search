@@ -14,6 +14,8 @@ import retrofit.http.QueryMap;
  */
 public interface FlickrApiService {
 
+    static final String ENDPOINT = "https://api.flickr.com/services";
+
     @GET("/rest")
     void getPhotos(@Query("method") String method, @Query("api_key") String apiKey,
             @Query("tags") String tags, @Query("per_page") String perPage,
