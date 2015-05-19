@@ -1,5 +1,10 @@
 package com.fredde.flickrsearch.fragment;
 
+import com.fredde.flickrsearch.R;
+import com.fredde.flickrsearch.adapters.SearchResultAdapter;
+import com.fredde.flickrsearch.callbacks.SearchListCallback;
+import com.fredde.flickrsearch.data.FlickrPhoto;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,13 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-
-import com.fredde.flickrsearch.R;
-import com.fredde.flickrsearch.adapters.SearchResultAdapter;
-import com.fredde.flickrsearch.callbacks.SearchListCallback;
-import com.fredde.flickrsearch.data.FlickrPhoto;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -52,7 +51,7 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
     /**
      * The list adapter feeding the list with search results.
      */
-    private ListAdapter mAdapter;
+    private SearchResultAdapter mAdapter;
 
     /**
      * Realm instance.
@@ -147,6 +146,16 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
         return false;
     }
 
+
+    public void updateSearchResult(String query){
+        Log.d("FREDDE","updateSearchResult "+query);
+
+        RealmResults<FlickrPhoto> results = mRealm.where(FlickrPhoto.class).contains("tags",
+                query).findAll();
+
+        mAdapter.updateRealmResults(results);
+    }
+
     /**
      * Clears the SearchView by setting its  OnQueryListener to null.
      */
@@ -170,7 +179,8 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
             res = mRealm.where(FlickrPhoto.class).findAll();
         }
 
-        Log.d("FREDDE","res size"+res.size());
+        Log.d("FREDDE","query string "+query);
+        Log.d("FREDDE","res size = "+res.size());
         return res;
     }
 

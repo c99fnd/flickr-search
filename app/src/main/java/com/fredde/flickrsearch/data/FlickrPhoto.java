@@ -254,16 +254,18 @@ public class FlickrPhoto extends RealmObject implements Serializable {
     }
 
     /**
+     * Returns the image url as a string.
      *
-     * @return
+     * @return The image url.
      */
     public String getUrl() {
         return url;
     }
 
     /**
+     * Sets the image url.
      *
-     * @param url
+     * @param url The image url to set.
      */
     public void setUrl(String url) {
         this.url = url;
