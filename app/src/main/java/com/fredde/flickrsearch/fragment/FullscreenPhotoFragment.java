@@ -1,6 +1,6 @@
 package com.fredde.flickrsearch.fragment;
 
-import com.fredde.flickrsearch.FlickrUrlBuilder;
+import com.fredde.flickrsearch.utils.FlickrUrlBuilder;
 import com.fredde.flickrsearch.R;
 import com.fredde.flickrsearch.data.FlickrPhoto;
 import com.squareup.picasso.Picasso;
@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import io.realm.Realm;
-import io.realm.RealmResults;
 
 /**
  * Displays a photo in fullscreen.

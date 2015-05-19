@@ -24,9 +24,6 @@ public class SearchResultAdapter extends RealmBaseAdapter<FlickrPhoto> implement
         ImageView imageView;
     }
 
-    ;
-
-
     /**
      * Constructor
      *
@@ -43,10 +40,10 @@ public class SearchResultAdapter extends RealmBaseAdapter<FlickrPhoto> implement
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
-        if (convertView == null){
+        if (convertView == null) {
             convertView = inflater.inflate(R.layout.search_list_item, parent, false);
             holder = new ViewHolder();
-           // holder.textView = (TextView)convertView.findViewById(R.id.search_list_item_name);
+            // holder.textView = (TextView)convertView.findViewById(R.id.search_list_item_name);
             holder.imageView = (ImageView)convertView.findViewById(R.id.search_list_item_image);
             convertView.setTag(holder);
         } else {

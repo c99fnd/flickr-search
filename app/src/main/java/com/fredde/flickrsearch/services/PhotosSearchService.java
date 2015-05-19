@@ -1,6 +1,6 @@
 package com.fredde.flickrsearch.services;
 
-import com.fredde.flickrsearch.FlickrUrlBuilder;
+import com.fredde.flickrsearch.utils.FlickrUrlBuilder;
 import com.fredde.flickrsearch.R;
 import com.fredde.flickrsearch.api.FlickrApiService;
 import com.fredde.flickrsearch.data.FlickrPhoto;

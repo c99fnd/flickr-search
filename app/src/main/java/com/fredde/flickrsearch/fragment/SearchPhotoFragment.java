@@ -14,7 +14,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -58,10 +57,6 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
      */
     private Realm mRealm;
 
-    /**
-     * Keep the latest query string.
-     */
-    private String mLastestQuery;
 
     @Override
     public void onAttach(Activity activity) {
@@ -82,7 +77,7 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
         mRealm = Realm.getInstance(getActivity().getApplicationContext());
 
         String search = readSearchStringFromPrefs();
-        RealmResults<FlickrPhoto> data = getStartupDataFromRealm(search);
+        RealmResults<FlickrPhoto> data = getPhotosFromDb(search);
 
         mAdapter = new SearchResultAdapter(getActivity().getApplicationContext(), data, true);
     }
@@ -147,12 +142,14 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
     }
 
 
-    public void updateSearchResult(String query){
-        Log.d("FREDDE","updateSearchResult "+query);
-
-        RealmResults<FlickrPhoto> results = mRealm.where(FlickrPhoto.class).contains("tags",
-                query).findAll();
-
+    /**
+     * Called when the query data has been changed to notify the fragment that new data is
+     * needed tp be fetched.
+     *
+     * @param query The query to use when fetching new data.
+     */
+    public void notifyQueryDataChanged(String query) {
+        RealmResults<FlickrPhoto> results = getPhotosFromDb(query);
         mAdapter.updateRealmResults(results);
     }
 
@@ -169,18 +166,15 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
      * Retrieves data from realm.
      *
      * @param query The query to use or null if all data is supposed to be fetched.
-     * @return RealmResults.
+     * @return RealmResults The result as a list.
      */
-    private RealmResults<FlickrPhoto> getStartupDataFromRealm(@Nullable String query) {
+    private RealmResults<FlickrPhoto> getPhotosFromDb(@Nullable String query) {
         RealmResults<FlickrPhoto> res;
         if (query != null) {
-            res = mRealm.where(FlickrPhoto.class).contains("tags", query).findAll();
+            res = mRealm.where(FlickrPhoto.class).contains("tags", query.toLowerCase()).findAll();
         } else {
             res = mRealm.where(FlickrPhoto.class).findAll();
         }
-
-        Log.d("FREDDE","query string "+query);
-        Log.d("FREDDE","res size = "+res.size());
         return res;
     }
 

@@ -40,13 +40,13 @@ public class MainActivity extends AppCompatActivity implements SearchListCallbac
     protected void onResume() {
         super.onResume();
         mLocalReciever = new BroadcastReceiver() {
+
             @Override
             public void onReceive(Context context, Intent intent) {
-                SearchPhotoFragment fragment = (SearchPhotoFragment)getSupportFragmentManager().findFragmentByTag
-                        (SEARCH_LIST_TAG);
-                String query = intent.getStringExtra(PhotosSearchService.QUERY_STRING_EXTRA);
-                fragment.updateSearchResult(query);
-
+                    SearchPhotoFragment fragment = (SearchPhotoFragment)getSupportFragmentManager()
+                            .findFragmentByTag(SEARCH_LIST_TAG);
+                    String query = intent.getStringExtra(PhotosSearchService.QUERY_STRING_EXTRA);
+                    fragment.notifyQueryDataChanged(query);
             }
         };
         LocalBroadcastManager mgr = LocalBroadcastManager.getInstance(getApplicationContext());
