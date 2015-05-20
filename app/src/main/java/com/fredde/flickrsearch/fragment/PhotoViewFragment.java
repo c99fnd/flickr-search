@@ -2,7 +2,7 @@ package com.fredde.flickrsearch.fragment;
 
 import com.fredde.flickrsearch.utils.FlickrUrlBuilder;
 import com.fredde.flickrsearch.R;
-import com.fredde.flickrsearch.data.FlickrPhoto;
+import com.fredde.flickrsearch.data.PhotoEntry;
 import com.squareup.picasso.Picasso;
 
 import android.os.Bundle;
@@ -18,14 +18,14 @@ import io.realm.Realm;
 /**
  * Displays a photo in fullscreen.
  */
-public class FullscreenPhotoFragment extends Fragment {
+public class PhotoViewFragment extends Fragment {
 
     public static final String ARG_ITEM = "photo_id" ;
 
     /**
      * Constructor.
      */
-    public FullscreenPhotoFragment() {
+    public PhotoViewFragment() {
     }
 
     @Override
@@ -42,7 +42,7 @@ public class FullscreenPhotoFragment extends Fragment {
 
     public void setFullscreenImage(ImageView fullscreenImage, String id) {
         Realm realm = Realm.getInstance(getActivity().getApplicationContext());
-        FlickrPhoto photo = realm.where(FlickrPhoto.class).equalTo("id",id)
+        PhotoEntry photo = realm.where(PhotoEntry.class).equalTo("id",id)
                 .findFirst();
 
         Picasso.with(getActivity().getApplicationContext()).load(FlickrUrlBuilder.buildUrl(photo)).into

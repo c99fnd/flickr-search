@@ -1,9 +1,9 @@
 package com.fredde.flickrsearch;
 
 import com.fredde.flickrsearch.callbacks.SearchListCallback;
-import com.fredde.flickrsearch.fragment.FullscreenPhotoFragment;
-import com.fredde.flickrsearch.fragment.SearchPhotoFragment;
-import com.fredde.flickrsearch.services.PhotosSearchService;
+import com.fredde.flickrsearch.fragment.PhotoViewFragment;
+import com.fredde.flickrsearch.fragment.PhotoSearchFragment;
+import com.fredde.flickrsearch.services.PhotoSearchService;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements SearchListCallbac
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new SearchPhotoFragment(), SEARCH_LIST_TAG).commit();
+                    .add(R.id.container, new PhotoSearchFragment(), SEARCH_LIST_TAG).commit();
         }
     }
 
@@ -43,15 +43,15 @@ public class MainActivity extends AppCompatActivity implements SearchListCallbac
 
             @Override
             public void onReceive(Context context, Intent intent) {
-                    SearchPhotoFragment fragment = (SearchPhotoFragment)getSupportFragmentManager()
+                    PhotoSearchFragment fragment = (PhotoSearchFragment)getSupportFragmentManager()
                             .findFragmentByTag(SEARCH_LIST_TAG);
-                    String query = intent.getStringExtra(PhotosSearchService.QUERY_STRING_EXTRA);
+                    String query = intent.getStringExtra(PhotoSearchService.QUERY_STRING_EXTRA);
                     fragment.notifyQueryDataChanged(query);
             }
         };
         LocalBroadcastManager mgr = LocalBroadcastManager.getInstance(getApplicationContext());
         mgr.registerReceiver(mLocalReciever,
-                new IntentFilter(PhotosSearchService.BROADCAST_SEARCH_COMPLETED));
+                new IntentFilter(PhotoSearchService.BROADCAST_SEARCH_COMPLETED));
     }
 
     @Override
@@ -74,15 +74,15 @@ public class MainActivity extends AppCompatActivity implements SearchListCallbac
 
     @Override
     public void onListItemSelected(String id) {
-        FullscreenPhotoFragment frag = (FullscreenPhotoFragment)getSupportFragmentManager()
+        PhotoViewFragment frag = (PhotoViewFragment)getSupportFragmentManager()
                 .findFragmentByTag(FULLSCREEN_TAG);
 
         Bundle args = new Bundle();
-        args.putString(FullscreenPhotoFragment.ARG_ITEM, id);
+        args.putString(PhotoViewFragment.ARG_ITEM, id);
         if (frag != null) {
             frag.setArguments(args);
         } else {
-            frag = new FullscreenPhotoFragment();
+            frag = new PhotoViewFragment();
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 frag.setEnterTransition(new Fade(Visibility.MODE_IN));
                 frag.setExitTransition(new Fade(Visibility.MODE_OUT));
@@ -97,10 +97,15 @@ public class MainActivity extends AppCompatActivity implements SearchListCallbac
     @Override
     public void onSearch(String query) {
         /* Create the Service Intent */
-        Intent msgIntent = new Intent(this, PhotosSearchService.class);
+        Intent msgIntent = new Intent(this, PhotoSearchService.class);
 
         /* Store the query string as an extra. */
-        msgIntent.putExtra(PhotosSearchService.QUERY_STRING_EXTRA, query);
+        msgIntent.putExtra(PhotoSearchService.QUERY_STRING_EXTRA, query);
         startService(msgIntent);
+    }
+
+    @Override
+    public void onLoadMore(int page, int perPage) {
+
     }
 }

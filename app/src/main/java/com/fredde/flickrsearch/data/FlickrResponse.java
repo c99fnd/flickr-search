@@ -8,5 +8,5 @@ import com.google.gson.annotations.SerializedName;
 public class FlickrResponse {
 
     @SerializedName("photos")
-    public FlickrPhotosHolder holder;
+    public PhotoEntriesHolder holder;
 }

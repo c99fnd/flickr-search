@@ -3,7 +3,7 @@ package com.fredde.flickrsearch.fragment;
 import com.fredde.flickrsearch.R;
 import com.fredde.flickrsearch.adapters.SearchResultAdapter;
 import com.fredde.flickrsearch.callbacks.SearchListCallback;
-import com.fredde.flickrsearch.data.FlickrPhoto;
+import com.fredde.flickrsearch.data.PhotoEntry;
 
 import android.app.Activity;
 import android.content.Context;
@@ -30,7 +30,7 @@ import io.realm.RealmResults;
 /**
  * Displays a search widget and a list of search results. The start fragment of the application.
  */
-public class SearchPhotoFragment extends Fragment implements OnQueryTextListener {
+public class PhotoSearchFragment extends Fragment implements OnQueryTextListener {
 
     /**
      * Shared Prefs key.
@@ -77,7 +77,7 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
         mRealm = Realm.getInstance(getActivity().getApplicationContext());
 
         String search = readSearchStringFromPrefs();
-        RealmResults<FlickrPhoto> data = getPhotosFromDb(search);
+        RealmResults<PhotoEntry> data = getPhotosFromDb(search);
 
         mAdapter = new SearchResultAdapter(getActivity().getApplicationContext(), data, true);
     }
@@ -92,7 +92,7 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
         listView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FlickrPhoto photo = (FlickrPhoto)mAdapter.getItem(position);
+                PhotoEntry photo = (PhotoEntry)mAdapter.getItem(position);
                 mCallback.onListItemSelected(photo.getId());
             }
         });
@@ -149,7 +149,7 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
      * @param query The query to use when fetching new data.
      */
     public void notifyQueryDataChanged(String query) {
-        RealmResults<FlickrPhoto> results = getPhotosFromDb(query);
+        RealmResults<PhotoEntry> results = getPhotosFromDb(query);
         mAdapter.updateRealmResults(results);
     }
 
@@ -168,12 +168,12 @@ public class SearchPhotoFragment extends Fragment implements OnQueryTextListener
      * @param query The query to use or null if all data is supposed to be fetched.
      * @return RealmResults The result as a list.
      */
-    private RealmResults<FlickrPhoto> getPhotosFromDb(@Nullable String query) {
-        RealmResults<FlickrPhoto> res;
+    private RealmResults<PhotoEntry> getPhotosFromDb(@Nullable String query) {
+        RealmResults<PhotoEntry> res;
         if (query != null) {
-            res = mRealm.where(FlickrPhoto.class).contains("tags", query.toLowerCase()).findAll();
+            res = mRealm.where(PhotoEntry.class).contains("tags", query.toLowerCase()).findAll();
         } else {
-            res = mRealm.where(FlickrPhoto.class).findAll();
+            res = mRealm.where(PhotoEntry.class).findAll();
         }
         return res;
     }

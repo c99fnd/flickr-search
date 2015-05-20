@@ -1,7 +1,7 @@
 package com.fredde.flickrsearch.adapters;
 
 import com.fredde.flickrsearch.R;
-import com.fredde.flickrsearch.data.FlickrPhoto;
+import com.fredde.flickrsearch.data.PhotoEntry;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
@@ -15,9 +15,9 @@ import io.realm.RealmBaseAdapter;
 import io.realm.RealmResults;
 
 /**
- * Adapter handling data feeding to the searchlist.
+ * Adapter handling data feeding to the search result list.
  */
-public class SearchResultAdapter extends RealmBaseAdapter<FlickrPhoto> implements ListAdapter {
+public class SearchResultAdapter extends RealmBaseAdapter<PhotoEntry> implements ListAdapter {
 
     private static class ViewHolder {
         TextView textView;
@@ -31,7 +31,7 @@ public class SearchResultAdapter extends RealmBaseAdapter<FlickrPhoto> implement
      * @param realmResults    Results from the realm database.
      * @param automaticUpdate If auto update should be used.
      */
-    public SearchResultAdapter(Context context, RealmResults<FlickrPhoto> realmResults,
+    public SearchResultAdapter(Context context, RealmResults<PhotoEntry> realmResults,
             boolean automaticUpdate) {
         super(context, realmResults, automaticUpdate);
     }
@@ -49,7 +49,7 @@ public class SearchResultAdapter extends RealmBaseAdapter<FlickrPhoto> implement
         } else {
             holder = (ViewHolder)convertView.getTag();
         }
-        FlickrPhoto photo = realmResults.get(position);
+        PhotoEntry photo = realmResults.get(position);
         //holder.textView.setText(photo.getTitle());
         Picasso.with(context).load(photo.getUrl()).into(holder.imageView);
         return convertView;

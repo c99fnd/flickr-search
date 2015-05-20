@@ -2,8 +2,8 @@ package com.fredde.flickrsearch.services;
 
 import com.fredde.flickrsearch.utils.FlickrUrlBuilder;
 import com.fredde.flickrsearch.R;
-import com.fredde.flickrsearch.api.FlickrApiService;
-import com.fredde.flickrsearch.data.FlickrPhoto;
+import com.fredde.flickrsearch.api.FlickrService;
+import com.fredde.flickrsearch.data.PhotoEntry;
 import com.fredde.flickrsearch.data.FlickrResponse;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -30,7 +30,7 @@ import retrofit.converter.GsonConverter;
 /**
  * Service that searches flicker and persists the result in a db.
  */
-public class PhotosSearchService extends IntentService {
+public class PhotoSearchService extends IntentService {
 
     public static final String QUERY_STRING_EXTRA = "query_string";
 
@@ -84,13 +84,13 @@ public class PhotosSearchService extends IntentService {
     /**
      * The flicker api service.
      */
-    private FlickrApiService mApiService;
+    private FlickrService mApiService;
 
 
     /**
      * Creates an IntentService.
      */
-    public PhotosSearchService() {
+    public PhotoSearchService() {
         super(NAME);
 
         /* Create a new Gson object adapted to RealmObject class */
@@ -106,9 +106,9 @@ public class PhotosSearchService extends IntentService {
             }
         }).create();
 
-        RestAdapter adapter = new Builder().setEndpoint(FlickrApiService.ENDPOINT)
+        RestAdapter adapter = new Builder().setEndpoint(FlickrService.ENDPOINT)
                 .setLogLevel(LogLevel.FULL).setConverter(new GsonConverter(gson)).build();
-        mApiService = adapter.create(FlickrApiService.class);
+        mApiService = adapter.create(FlickrService.class);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class PhotosSearchService extends IntentService {
      * @param query the search string.
      */
     private void queryApi(String query) {
-        List<FlickrPhoto> photos;
+        List<PhotoEntry> photos;
         FlickrResponse response = mApiService.getPhotos(sOptions, query);
         photos = response.holder.getPhotos();
         for (int i = 0; i < photos.size(); i++) {

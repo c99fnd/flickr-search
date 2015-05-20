@@ -1,6 +1,6 @@
 package com.fredde.flickrsearch.utils;
 
-import com.fredde.flickrsearch.data.FlickrPhoto;
+import com.fredde.flickrsearch.data.PhotoEntry;
 
 /**
  * Helper class for creating image url from FlickrPhoto object.
@@ -29,7 +29,7 @@ public class FlickrUrlBuilder {
      * @param photo
      * @return
      */
-    public static String buildUrl(FlickrPhoto photo){
+    public static String buildUrl(PhotoEntry photo){
        // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
         String farm = photo.getFarm();
         String server = photo.getServer();
@@ -45,7 +45,7 @@ public class FlickrUrlBuilder {
      * @param size
      * @return
      */
-    public static String buildUrl(FlickrPhoto photo, PhotoSize size){
+    public static String buildUrl(PhotoEntry photo, PhotoSize size){
         // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_{size}.jpg
         String farm = photo.getFarm();
         String server = photo.getServer();

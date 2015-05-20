@@ -16,4 +16,12 @@ public interface SearchListCallback {
      * Called when the SearchView is used.
      */
     public void onSearch(String query);
+
+    /**
+     * Called when the SearchView requires more data to be loaded.
+     *
+     * @param page    The page number to load.
+     * @param perPage Number of items per page.
+     */
+    public void onLoadMore(int page, int perPage);
 }

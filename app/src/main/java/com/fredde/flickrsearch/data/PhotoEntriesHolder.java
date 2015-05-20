@@ -5,9 +5,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Holder for flickr photos.
+ * Holder for photo entries respons from FlickrApi.
  */
-public class FlickrPhotosHolder {
+public class PhotoEntriesHolder {
 
     @SerializedName("page")
     private int mPage;
@@ -22,7 +22,7 @@ public class FlickrPhotosHolder {
     private String mTotal;
 
     @SerializedName("photo")
-    private List<FlickrPhoto> mPhotos;
+    private List<PhotoEntry> mPhotos;
 
     @SerializedName("stat")
     private String mStat;
@@ -31,7 +31,7 @@ public class FlickrPhotosHolder {
      *
      * @return
      */
-    public List<FlickrPhoto> getPhotos() {
+    public List<PhotoEntry> getPhotos() {
         return mPhotos;
     }
 

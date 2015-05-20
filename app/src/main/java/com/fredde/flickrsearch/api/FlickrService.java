@@ -12,7 +12,7 @@ import retrofit.http.QueryMap;
 /**
  * Retrofit Service Interface
  */
-public interface FlickrApiService {
+public interface FlickrService {
 
     static final String ENDPOINT = "https://api.flickr.com/services";
 
@@ -21,10 +21,6 @@ public interface FlickrApiService {
             @Query("tags") String tags, @Query("per_page") String perPage,
             @Query("format") String format, @Query("extras") String extras,
             Callback<FlickrResponse> response);
-
-
-    @GET("/rest")
-    FlickrResponse getPhotos(@QueryMap Map<String, String> options);
 
     @GET("/rest")
     FlickrResponse getPhotos(@QueryMap Map<String, String> options, @Query("tags") String tags);

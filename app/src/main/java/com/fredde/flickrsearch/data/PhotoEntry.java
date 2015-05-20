@@ -10,7 +10,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Data representation of a photo.
  */
-public class FlickrPhoto extends RealmObject implements Serializable {
+public class PhotoEntry extends RealmObject implements Serializable {
 
     /**
      * The id of this photo.
