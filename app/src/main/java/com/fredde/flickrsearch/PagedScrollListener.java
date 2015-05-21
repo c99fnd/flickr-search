@@ -9,13 +9,20 @@ import android.widget.AbsListView.OnScrollListener;
  */
 public abstract class PagedScrollListener implements OnScrollListener {
 
+    private static final int DEFAULT_THRESHOLD = 10;
 
-    private int mCurrentPage = 0;
-    private int mLoadThreshold = 10;
-    private boolean mLoading = false;
+    private int mCurrentPage;
+
+    private int mLoadThreshold;
+
+    private int mPrevTotalItemCount;
+
+    private int mStartPage;
+
+    private boolean mLoading;
 
     public PagedScrollListener() {
-
+        mLoadThreshold = DEFAULT_THRESHOLD;
     }
 
     public PagedScrollListener(int loadThreshold) {
@@ -24,6 +31,7 @@ public abstract class PagedScrollListener implements OnScrollListener {
 
     public PagedScrollListener(int loadThreshold, int startPage) {
         mLoadThreshold = loadThreshold;
+        mStartPage = startPage;
         mCurrentPage = startPage;
     }
 
@@ -34,22 +42,37 @@ public abstract class PagedScrollListener implements OnScrollListener {
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-            int totalItemCount) {
-
+                         int totalItemCount) {
         int remaningItems = totalItemCount - (firstVisibleItem + visibleItemCount);
 
-        Log.d("FREDDE", "firstVisibleItem " + firstVisibleItem);
-        Log.d("FREDDE", "visibleItemCount " + visibleItemCount);
         Log.d("FREDDE", "totalItemCount " + totalItemCount);
         Log.d("FREDDE", "remaningItems" + remaningItems);
 
-        if (!mLoading &&remaningItems <= mLoadThreshold) {
+        if (!mLoading && totalItemCount == 0) {
             mLoading = true;
-            mCurrentPage++;
-            onLoadMore(mCurrentPage);
         }
 
+        if (totalItemCount < mPrevTotalItemCount) {
+            mCurrentPage = mStartPage;
+            mPrevTotalItemCount = totalItemCount;
+        }
+
+        if (mLoading && totalItemCount > mPrevTotalItemCount) {
+            mLoading = false;
+            mPrevTotalItemCount = totalItemCount;
+            mCurrentPage++;
+        }
+
+        if (!mLoading && remaningItems < mLoadThreshold) {
+            mLoading = true;
+            onLoadMore(mCurrentPage + 1);
+        }
     }
 
+    /**
+     * Called then more data needs to be loaded.
+     *
+     * @param page The page to load.
+     */
     public abstract void onLoadMore(int page);
 }
