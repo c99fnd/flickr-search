@@ -2,7 +2,6 @@ package com.fredde.flickrsearch.fragment;
 
 import com.fredde.flickrsearch.R;
 import com.fredde.flickrsearch.adapters.SearchResultAdapter;
-import com.fredde.flickrsearch.callbacks.SearchListCallback;
 import com.fredde.flickrsearch.data.PhotoEntry;
 
 import android.app.Activity;
@@ -20,6 +19,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -40,7 +41,7 @@ public class PhotoSearchFragment extends Fragment implements OnQueryTextListener
     /**
      * Callback used to communicate with MainActivity.
      */
-    private SearchListCallback mCallback;
+    private Callback mCallbackListener;
 
     /**
      * The action bar SearchView.
@@ -57,13 +58,31 @@ public class PhotoSearchFragment extends Fragment implements OnQueryTextListener
      */
     private Realm mRealm;
 
+    /**
+     * Callback
+     */
+    public interface Callback {
+
+        /**
+         * Called when a list item is selected.
+         *
+         * @param id The id of the item that was selected.
+         */
+        public void onListItemSelected(String id);
+
+        /**
+         * @param query The tag to seach for
+         * @param page  The page to get.
+         */
+        public void onSearch(String query, int page);
+    }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
         try {
-            mCallback = (SearchListCallback)activity;
+            mCallbackListener = (Callback)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(
                     activity.toString() + " must implement SearchListCallback");
@@ -79,13 +98,14 @@ public class PhotoSearchFragment extends Fragment implements OnQueryTextListener
         String search = readSearchStringFromPrefs();
         RealmResults<PhotoEntry> data = getPhotosFromDb(search);
 
-        mAdapter = new SearchResultAdapter(getActivity().getApplicationContext(), data, true);
+        mAdapter = new SearchResultAdapter(getActivity().getApplicationContext(), data, false);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
         ListView listView = (ListView)rootView.findViewById(R.id.search_list);
 
@@ -93,9 +113,10 @@ public class PhotoSearchFragment extends Fragment implements OnQueryTextListener
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PhotoEntry photo = (PhotoEntry)mAdapter.getItem(position);
-                mCallback.onListItemSelected(photo.getId());
+                mCallbackListener.onListItemSelected(photo.getId());
             }
         });
+        listView.setOnScrollListener(this);
         listView.setAdapter(mAdapter);
         return rootView;
     }
@@ -131,7 +152,7 @@ public class PhotoSearchFragment extends Fragment implements OnQueryTextListener
     public boolean onQueryTextSubmit(String query) {
         writeSearchStringInPrefs(query);
         mSearchView.clearFocus();
-        mCallback.onSearch(query);
+        mCallbackListener.onSearch(query, 2);
 
         return true;
     }
@@ -140,7 +161,6 @@ public class PhotoSearchFragment extends Fragment implements OnQueryTextListener
     public boolean onQueryTextChange(String newText) {
         return false;
     }
-
 
     /**
      * Called when the query data has been changed to notify the fragment that new data is

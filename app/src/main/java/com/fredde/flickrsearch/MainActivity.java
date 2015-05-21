@@ -1,8 +1,7 @@
 package com.fredde.flickrsearch;
 
-import com.fredde.flickrsearch.callbacks.SearchListCallback;
-import com.fredde.flickrsearch.fragment.PhotoViewFragment;
 import com.fredde.flickrsearch.fragment.PhotoSearchFragment;
+import com.fredde.flickrsearch.fragment.PhotoViewFragment;
 import com.fredde.flickrsearch.services.PhotoSearchService;
 
 import android.content.BroadcastReceiver;
@@ -18,7 +17,7 @@ import android.transition.Visibility;
 import android.view.MenuItem;
 
 
-public class MainActivity extends AppCompatActivity implements SearchListCallback {
+public class MainActivity extends AppCompatActivity implements PhotoSearchFragment.Callback {
 
     private static final String SEARCH_LIST_TAG = "searchListFragment";
 
@@ -43,10 +42,10 @@ public class MainActivity extends AppCompatActivity implements SearchListCallbac
 
             @Override
             public void onReceive(Context context, Intent intent) {
-                    PhotoSearchFragment fragment = (PhotoSearchFragment)getSupportFragmentManager()
-                            .findFragmentByTag(SEARCH_LIST_TAG);
-                    String query = intent.getStringExtra(PhotoSearchService.QUERY_STRING_EXTRA);
-                    fragment.notifyQueryDataChanged(query);
+                PhotoSearchFragment fragment = (PhotoSearchFragment)getSupportFragmentManager()
+                        .findFragmentByTag(SEARCH_LIST_TAG);
+                String query = intent.getStringExtra(PhotoSearchService.EXTRA_QUERY_STRING);
+                fragment.notifyQueryDataChanged(query);
             }
         };
         LocalBroadcastManager mgr = LocalBroadcastManager.getInstance(getApplicationContext());
@@ -95,17 +94,14 @@ public class MainActivity extends AppCompatActivity implements SearchListCallbac
     }
 
     @Override
-    public void onSearch(String query) {
+    public void onSearch(String query, int page) {
         /* Create the Service Intent */
-        Intent msgIntent = new Intent(this, PhotoSearchService.class);
+        Intent intent = new Intent(this, PhotoSearchService.class);
+        intent.setAction(PhotoSearchService.ACTION_FIND_PHOTOS);
 
         /* Store the query string as an extra. */
-        msgIntent.putExtra(PhotoSearchService.QUERY_STRING_EXTRA, query);
-        startService(msgIntent);
-    }
-
-    @Override
-    public void onLoadMore(int page, int perPage) {
-
+        intent.putExtra(PhotoSearchService.EXTRA_QUERY_STRING, query);
+        intent.putExtra(PhotoSearchService.EXTRA_PAGE_NR, page);
+        startService(intent);
     }
 }

@@ -1,10 +1,10 @@
 package com.fredde.flickrsearch.services;
 
-import com.fredde.flickrsearch.utils.FlickrUrlBuilder;
 import com.fredde.flickrsearch.R;
 import com.fredde.flickrsearch.api.FlickrService;
-import com.fredde.flickrsearch.data.PhotoEntry;
 import com.fredde.flickrsearch.data.FlickrResponse;
+import com.fredde.flickrsearch.data.PhotoEntry;
+import com.fredde.flickrsearch.utils.FlickrUrlBuilder;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -32,7 +32,11 @@ import retrofit.converter.GsonConverter;
  */
 public class PhotoSearchService extends IntentService {
 
-    public static final String QUERY_STRING_EXTRA = "query_string";
+    public static final String ACTION_FIND_PHOTOS = "com.fredde.services.FIND_PHOTOS";
+
+    public static final String EXTRA_QUERY_STRING = "query_string";
+
+    public static final String EXTRA_PAGE_NR = "page_nr";
 
     public static final String BROADCAST_SEARCH_COMPLETED = "searchCompleted";
 
@@ -121,10 +125,14 @@ public class PhotoSearchService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Bundle extra = intent.getExtras();
-        String queryString = extra.getString(QUERY_STRING_EXTRA);
+        String action = intent.getAction();
+        if (ACTION_FIND_PHOTOS.equals(action)) {
+            Bundle extra = intent.getExtras();
+            String queryString = extra.getString(EXTRA_QUERY_STRING);
+            int page = extra.getInt(EXTRA_PAGE_NR);
 
-        queryApi(queryString);
+            queryApi(queryString, page);
+        }
     }
 
 
@@ -133,9 +141,9 @@ public class PhotoSearchService extends IntentService {
      *
      * @param query the search string.
      */
-    private void queryApi(String query) {
+    private void queryApi(String query, int page) {
         List<PhotoEntry> photos;
-        FlickrResponse response = mApiService.getPhotos(sOptions, query);
+        FlickrResponse response = mApiService.getPhotos(sOptions, page, query);
         photos = response.holder.getPhotos();
         for (int i = 0; i < photos.size(); i++) {
             photos.get(i).setUrl(FlickrUrlBuilder.buildUrl(photos.get(i)));
@@ -150,7 +158,7 @@ public class PhotoSearchService extends IntentService {
         realm.close();
 
         Intent intent = new Intent(BROADCAST_SEARCH_COMPLETED);
-        intent.putExtra(QUERY_STRING_EXTRA, query);
+        intent.putExtra(EXTRA_QUERY_STRING, query);
         sendLocalBroadcast(intent);
     }
 
