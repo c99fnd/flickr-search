@@ -19,8 +19,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -116,7 +114,6 @@ public class PhotoSearchFragment extends Fragment implements OnQueryTextListener
                 mCallbackListener.onListItemSelected(photo.getId());
             }
         });
-        listView.setOnScrollListener(this);
         listView.setAdapter(mAdapter);
         return rootView;
     }
