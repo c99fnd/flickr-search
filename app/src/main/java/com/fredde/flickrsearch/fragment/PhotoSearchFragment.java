@@ -1,5 +1,6 @@
 package com.fredde.flickrsearch.fragment;
 
+import com.fredde.flickrsearch.PagedScrollListener;
 import com.fredde.flickrsearch.R;
 import com.fredde.flickrsearch.adapters.SearchResultAdapter;
 import com.fredde.flickrsearch.data.PhotoEntry;
@@ -13,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -112,6 +114,13 @@ public class PhotoSearchFragment extends Fragment implements OnQueryTextListener
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PhotoEntry photo = (PhotoEntry)mAdapter.getItem(position);
                 mCallbackListener.onListItemSelected(photo.getId());
+            }
+        });
+
+        listView.setOnScrollListener(new PagedScrollListener() {
+            @Override
+            public void onLoadMore(int page) {
+             Log.d("FREDDE", "onLoadMore " + page);
             }
         });
         listView.setAdapter(mAdapter);

@@ -57,13 +57,13 @@ public class PhotoSearchService extends IntentService {
 
 
     /* Flickr Service API option values. */
-    private static final String METHOD_VALUE = "flickr" + ".photos.search";
+    private static final String METHOD_VALUE = "flickr.photos.search";
 
     private static final String API_KEY_VALUE = "554ac5cebce4acd585f48e6255982909";
 
     private static final String FORMAT_VALUE = "json";
 
-    private static final String PER_PAGE_VALUE = "10";
+    private static final String PER_PAGE_VALUE = "20";
 
     private static final String EXTRAS_VALUE = "tags";
 
