@@ -51,7 +51,7 @@ public class SearchResultAdapter extends RealmBaseAdapter<PhotoEntry> implements
         }
         PhotoEntry photo = realmResults.get(position);
         //holder.textView.setText(photo.getTitle());
-        Picasso.with(context).load(photo.getUrl()).into(holder.imageView);
+        Picasso.with(context).load(photo.getUrl()).placeholder(R.drawable.list_placeholder).into(holder.imageView);
         return convertView;
     }
 }
