@@ -1,15 +1,12 @@
 package com.fredde.flickrsearch;
 
-import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 
 /**
- * Handles paging for a scrollable.
+ * Handles on-demand loading for a scrollable.
  */
 public abstract class PagedScrollListener implements OnScrollListener {
-
-    private static final int DEFAULT_THRESHOLD = 10;
 
     private int mCurrentPage;
 
@@ -17,22 +14,15 @@ public abstract class PagedScrollListener implements OnScrollListener {
 
     private int mPrevTotalItemCount;
 
-    private int mStartPage;
-
     private boolean mLoading;
 
-    public PagedScrollListener() {
-        mLoadThreshold = DEFAULT_THRESHOLD;
-    }
-
+    /**
+     * Constructor.
+     *
+     * @param loadThreshold Threshold for when to start loading.
+     */
     public PagedScrollListener(int loadThreshold) {
         mLoadThreshold = loadThreshold;
-    }
-
-    public PagedScrollListener(int loadThreshold, int startPage) {
-        mLoadThreshold = loadThreshold;
-        mStartPage = startPage;
-        mCurrentPage = startPage;
     }
 
     @Override
@@ -42,18 +32,15 @@ public abstract class PagedScrollListener implements OnScrollListener {
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
-                         int totalItemCount) {
+            int totalItemCount) {
         int remaningItems = totalItemCount - (firstVisibleItem + visibleItemCount);
-
-        Log.d("FREDDE", "totalItemCount " + totalItemCount);
-        Log.d("FREDDE", "remaningItems" + remaningItems);
 
         if (!mLoading && totalItemCount == 0) {
             mLoading = true;
         }
 
         if (totalItemCount < mPrevTotalItemCount) {
-            mCurrentPage = mStartPage;
+            mCurrentPage = 0;
             mPrevTotalItemCount = totalItemCount;
         }
 

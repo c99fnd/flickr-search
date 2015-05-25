@@ -42,20 +42,6 @@ public class PhotoSearchService extends IntentService {
 
     private static final String NAME = "PhotoSearchService";
 
-    /* Flickr service API option keys */
-    private static final String METHOD_KEY = "method";
-
-    private static final String API_KEY_KEY = "api_key";
-
-    private static final String FORMAT_KEY = "format";
-
-    private static final String PER_PAGE_KEY = "per_page";
-
-    private static final String EXTRAS_KEY = "extras";
-
-    private static final String CALLBACK_KEY = "nojsoncallback";
-
-
     /* Flickr Service API option values. */
     private static final String METHOD_VALUE = "flickr.photos.search";
 
@@ -76,13 +62,16 @@ public class PhotoSearchService extends IntentService {
      */
     private static Map<String, String> sOptions = new HashMap<String, String>();
 
+    /**
+     * Add paramerets to options map.
+     */
     static {
-        sOptions.put(METHOD_KEY, METHOD_VALUE);
-        sOptions.put(API_KEY_KEY, API_KEY_VALUE);
-        sOptions.put(FORMAT_KEY, FORMAT_VALUE);
-        sOptions.put(PER_PAGE_KEY, PER_PAGE_VALUE);
-        sOptions.put(EXTRAS_KEY, EXTRAS_VALUE);
-        sOptions.put(CALLBACK_KEY, CALLBACK_VALUE);
+        sOptions.put(FlickrService.METHOD, METHOD_VALUE);
+        sOptions.put(FlickrService.API_KEY, API_KEY_VALUE);
+        sOptions.put(FlickrService.FORMAT, FORMAT_VALUE);
+        sOptions.put(FlickrService.PER_PAGE, PER_PAGE_VALUE);
+        sOptions.put(FlickrService.EXTRAS, EXTRAS_VALUE);
+        sOptions.put(FlickrService.CALLBACK, CALLBACK_VALUE);
     }
 
     /**
@@ -145,6 +134,8 @@ public class PhotoSearchService extends IntentService {
         List<PhotoEntry> photos;
         FlickrResponse response = mApiService.getPhotos(sOptions, page, query);
         photos = response.holder.getPhotos();
+
+        /* Build and set the image url to PhotoEntry */
         for (int i = 0; i < photos.size(); i++) {
             photos.get(i).setUrl(FlickrUrlBuilder.buildUrl(photos.get(i)));
         }

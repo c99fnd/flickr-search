@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Holder for photo entries respons from FlickrApi.
+ * Holder for photo entries response from FlickrApi.
  */
 public class PhotoEntriesHolder {
 

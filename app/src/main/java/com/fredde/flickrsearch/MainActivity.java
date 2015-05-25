@@ -19,11 +19,20 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements PhotoSearchFragment.Callback {
 
+    /**
+     * Id tag for the search list fragment.
+     */
     private static final String SEARCH_LIST_TAG = "searchListFragment";
 
+    /**
+     * Id tag for the fullscreen fragment.
+     */
     private static final String FULLSCREEN_TAG = "fullscreenFragment";
 
-    private BroadcastReceiver mLocalReciever;
+    /**
+     * Broadcast receiver used to handle messages from the server.
+     */
+    private BroadcastReceiver mLocalReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements PhotoSearchFragme
     @Override
     protected void onResume() {
         super.onResume();
-        mLocalReciever = new BroadcastReceiver() {
+        mLocalReceiver = new BroadcastReceiver() {
 
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -49,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements PhotoSearchFragme
             }
         };
         LocalBroadcastManager mgr = LocalBroadcastManager.getInstance(getApplicationContext());
-        mgr.registerReceiver(mLocalReciever,
+        mgr.registerReceiver(mLocalReceiver,
                 new IntentFilter(PhotoSearchService.BROADCAST_SEARCH_COMPLETED));
     }
 
@@ -57,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements PhotoSearchFragme
     protected void onPause() {
         super.onPause();
         LocalBroadcastManager mgr = LocalBroadcastManager.getInstance(getApplicationContext());
-        mgr.unregisterReceiver(mLocalReciever);
+        mgr.unregisterReceiver(mLocalReceiver);
     }
 
     @Override
@@ -94,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements PhotoSearchFragme
     }
 
     @Override
-    public void onSearch(String query, int page) {
+    public void onFetchData(String query, int page) {
         /* Create the Service Intent */
         Intent intent = new Intent(this, PhotoSearchService.class);
         intent.setAction(PhotoSearchService.ACTION_FIND_PHOTOS);

@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
-import android.widget.TextView;
 
 import io.realm.RealmBaseAdapter;
 import io.realm.RealmResults;
@@ -20,7 +19,6 @@ import io.realm.RealmResults;
 public class SearchResultAdapter extends RealmBaseAdapter<PhotoEntry> implements ListAdapter {
 
     private static class ViewHolder {
-        TextView textView;
         ImageView imageView;
     }
 
@@ -43,14 +41,12 @@ public class SearchResultAdapter extends RealmBaseAdapter<PhotoEntry> implements
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.search_list_item, parent, false);
             holder = new ViewHolder();
-            // holder.textView = (TextView)convertView.findViewById(R.id.search_list_item_name);
             holder.imageView = (ImageView)convertView.findViewById(R.id.search_list_item_image);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder)convertView.getTag();
         }
         PhotoEntry photo = realmResults.get(position);
-        //holder.textView.setText(photo.getTitle());
         Picasso.with(context).load(photo.getUrl()).into(holder.imageView);
         return convertView;
     }
