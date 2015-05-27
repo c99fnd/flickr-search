@@ -3,5 +3,5 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="action_search">Search Flickr</string>
-    <string name="toast_text_search_started">Searching...</string>
+    <string name="toast_text_search_started">Loading...</string>
 </resources>

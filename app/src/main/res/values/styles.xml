@@ -8,6 +8,7 @@
         <item name="android:textColorPrimary">@color/text_primary</item>
         <item name="android:textColor">@color/text_secondary</item>
         <item name="windowActionBarOverlay">true</item>
+
     </style>
 
     <style name="AppTheme.Fullscreen" parent="Theme.AppCompat.NoActionBar">

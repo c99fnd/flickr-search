@@ -1,20 +1,18 @@
 package com.fredde.flickrsearch;
 
-import com.fredde.flickrsearch.fragment.PhotoSearchFragment;
-import com.fredde.flickrsearch.fragment.PhotoViewFragment;
-import com.fredde.flickrsearch.services.PhotoSearchService;
-
+import android.app.ActivityOptions;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Fade;
-import android.transition.Visibility;
 import android.view.MenuItem;
+import android.view.View;
+
+import com.fredde.flickrsearch.fragment.PhotoSearchFragment;
+import com.fredde.flickrsearch.services.PhotoSearchService;
 
 
 public class MainActivity extends AppCompatActivity implements PhotoSearchFragment.Callback {
@@ -24,10 +22,6 @@ public class MainActivity extends AppCompatActivity implements PhotoSearchFragme
      */
     private static final String SEARCH_LIST_TAG = "searchListFragment";
 
-    /**
-     * Id tag for the fullscreen fragment.
-     */
-    private static final String FULLSCREEN_TAG = "fullscreenFragment";
 
     /**
      * Broadcast receiver used to handle messages from the server.
@@ -82,31 +76,16 @@ public class MainActivity extends AppCompatActivity implements PhotoSearchFragme
 
     @Override
     public void onListItemSelected(String id) {
-        PhotoViewFragment frag = (PhotoViewFragment)getSupportFragmentManager()
-                .findFragmentByTag(FULLSCREEN_TAG);
 
-        Bundle args = new Bundle();
-        args.putString(PhotoViewFragment.ARG_ITEM, id);
+        View image =  findViewById(R.id.search_list_item_image);
+
+        ActivityOptions options = ActivityOptions
+                .makeSceneTransitionAnimation(this, image, "image");
 
         Intent intent = new Intent(this,FullscreenActivity.class);
-
         intent.setAction(FullscreenActivity.ACTION_VIEW_IMAGE);
         intent.putExtra(FullscreenActivity.EXTRA_PHOTO_ID, id);
-        startActivity(intent);
-
-       /* if (frag != null) {
-            frag.setArguments(args);
-        } else {
-            frag = new PhotoViewFragment();
-            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                frag.setEnterTransition(new Fade(Visibility.MODE_IN));
-                frag.setExitTransition(new Fade(Visibility.MODE_OUT));
-                frag.setAllowEnterTransitionOverlap(true);
-            }
-            frag.setArguments(args);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, frag, FULLSCREEN_TAG).addToBackStack(null).commit();
-        } */
+        startActivity(intent, options.toBundle());
 
     }
 

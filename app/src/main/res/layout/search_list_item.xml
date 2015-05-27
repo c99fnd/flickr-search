@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/search_list_item_margin"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:transitionName="image" />
 
     <TextView
         android:id="@+id/search_list_item_name"
