@@ -75,9 +75,8 @@ public class MainActivity extends AppCompatActivity implements PhotoSearchFragme
 
 
     @Override
-    public void onListItemSelected(String id) {
-
-        View image =  findViewById(R.id.search_list_item_image);
+    public void onListItemSelected(String id, View view) {
+        View image =  view.findViewById(R.id.search_list_item_image);
 
         ActivityOptions options = ActivityOptions
                 .makeSceneTransitionAnimation(this, image, "image");

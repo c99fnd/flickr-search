@@ -18,8 +18,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FullscreenActivity"
-            android:theme="@style/AppTheme.Fullscreen">
+            android:name=".FullscreenActivity">
         </activity>
         <service
             android:name=".services.PhotoSearchService"

@@ -20,7 +20,9 @@ public class FullscreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_fullscreen);
+        setContentView(R.layout.fullscreen);
+        getSupportActionBar().hide();
+
         String id = getIntent().getStringExtra(EXTRA_PHOTO_ID);
         ImageView view = (ImageView) findViewById(R.id.fullscreen_view_image);
 

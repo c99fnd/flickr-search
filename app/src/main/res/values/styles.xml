@@ -10,13 +10,4 @@
         <item name="windowActionBarOverlay">true</item>
 
     </style>
-
-    <style name="AppTheme.Fullscreen" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent</item>
-        <item name="android:textColorPrimary">@color/text_primary</item>
-        <item name="android:textColor">@color/text_secondary</item>
-        <item name="windowActionBarOverlay">true</item>
-    </style>
 </resources>
