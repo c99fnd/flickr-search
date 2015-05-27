@@ -87,7 +87,14 @@ public class MainActivity extends AppCompatActivity implements PhotoSearchFragme
 
         Bundle args = new Bundle();
         args.putString(PhotoViewFragment.ARG_ITEM, id);
-        if (frag != null) {
+
+        Intent intent = new Intent(this,FullscreenActivity.class);
+
+        intent.setAction(FullscreenActivity.ACTION_VIEW_IMAGE);
+        intent.putExtra(FullscreenActivity.EXTRA_PHOTO_ID, id);
+        startActivity(intent);
+
+       /* if (frag != null) {
             frag.setArguments(args);
         } else {
             frag = new PhotoViewFragment();
@@ -99,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements PhotoSearchFragme
             frag.setArguments(args);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, frag, FULLSCREEN_TAG).addToBackStack(null).commit();
-        }
+        } */
+
     }
 
     @Override
