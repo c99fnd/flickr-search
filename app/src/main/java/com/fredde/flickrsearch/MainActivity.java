@@ -8,11 +8,16 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 
 import com.fredde.flickrsearch.fragment.PhotoSearchFragment;
 import com.fredde.flickrsearch.services.PhotoSearchService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements PhotoSearchFragment.Callback {
@@ -76,15 +81,25 @@ public class MainActivity extends AppCompatActivity implements PhotoSearchFragme
 
     @Override
     public void onListItemSelected(String id, View view) {
+        /* Get the shared view. */
         View image =  view.findViewById(R.id.search_list_item_image);
+        View statusBar = findViewById(android.R.id.statusBarBackground);
+        View navigationBar = findViewById(android.R.id.navigationBarBackground);
 
-        ActivityOptions options = ActivityOptions
-                .makeSceneTransitionAnimation(this, image, "image");
+
+        List<Pair<View, String>> pairs = new ArrayList<>();
+        pairs.add(Pair.create(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME));
+        pairs.add(Pair.create(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME));
+        pairs.add(Pair.create(image, "image"));
+
+        Bundle options = ActivityOptions.makeSceneTransitionAnimation(this,
+                pairs.toArray(new Pair[pairs.size()])).toBundle();
+
 
         Intent intent = new Intent(this,FullscreenActivity.class);
         intent.setAction(FullscreenActivity.ACTION_VIEW_IMAGE);
         intent.putExtra(FullscreenActivity.EXTRA_PHOTO_ID, id);
-        startActivity(intent, options.toBundle());
+        startActivity(intent, options);
 
     }
 
