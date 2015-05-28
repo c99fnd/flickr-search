@@ -2,8 +2,8 @@ package com.fredde.flickrsearch.services;
 
 import com.fredde.flickrsearch.R;
 import com.fredde.flickrsearch.api.FlickrService;
-import com.fredde.flickrsearch.data.FlickrResponse;
-import com.fredde.flickrsearch.data.PhotoEntry;
+import com.fredde.flickrsearch.models.FlickrResponse;
+import com.fredde.flickrsearch.models.PhotoEntry;
 import com.fredde.flickrsearch.utils.FlickrUrlBuilder;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;

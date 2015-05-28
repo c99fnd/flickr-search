@@ -1,4 +1,4 @@
-package com.fredde.flickrsearch;
+package com.fredde.flickrsearch.listeners;
 
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;

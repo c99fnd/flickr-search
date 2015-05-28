@@ -1,6 +1,6 @@
 package com.fredde.flickrsearch.utils;
 
-import com.fredde.flickrsearch.data.PhotoEntry;
+import com.fredde.flickrsearch.models.PhotoEntry;
 
 /**
  * Helper class for creating image url from FlickrPhoto object.

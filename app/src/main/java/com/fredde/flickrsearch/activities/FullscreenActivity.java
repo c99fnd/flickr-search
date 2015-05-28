@@ -1,16 +1,17 @@
-package com.fredde.flickrsearch;
+package com.fredde.flickrsearch.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
-import com.fredde.flickrsearch.data.PhotoEntry;
+import com.fredde.flickrsearch.R;
+import com.fredde.flickrsearch.models.PhotoEntry;
 import com.squareup.picasso.Picasso;
 
 import io.realm.Realm;
 
 /**
- * Activity displaying an image in fullscreen.
+ * Activity displaying an image in fullscreen_view.
  */
 public class FullscreenActivity extends AppCompatActivity {
 
@@ -20,7 +21,7 @@ public class FullscreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fullscreen);
+        setContentView(R.layout.fullscreen_view);
 
         String id = getIntent().getStringExtra(EXTRA_PHOTO_ID);
         ImageView view = (ImageView) findViewById(R.id.fullscreen_view_image);

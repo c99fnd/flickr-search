@@ -1,4 +1,4 @@
-package com.fredde.flickrsearch.data;
+package com.fredde.flickrsearch.models;
 
 import com.google.gson.annotations.SerializedName;
 

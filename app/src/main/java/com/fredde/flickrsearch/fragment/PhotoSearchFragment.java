@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.LayoutInflater;
@@ -19,10 +18,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.fredde.flickrsearch.PagedScrollListener;
+import com.fredde.flickrsearch.listeners.PagedScrollListener;
 import com.fredde.flickrsearch.R;
 import com.fredde.flickrsearch.adapters.SearchResultAdapter;
-import com.fredde.flickrsearch.data.PhotoEntry;
+import com.fredde.flickrsearch.models.PhotoEntry;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -118,7 +117,7 @@ public class PhotoSearchFragment extends Fragment implements OnQueryTextListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_search, container, false);
+        View rootView = inflater.inflate(R.layout.search_view, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.search_list);
 
         listView.setOnItemClickListener(new OnItemClickListener() {

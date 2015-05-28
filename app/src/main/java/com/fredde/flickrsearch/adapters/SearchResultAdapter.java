@@ -1,7 +1,7 @@
 package com.fredde.flickrsearch.adapters;
 
 import com.fredde.flickrsearch.R;
-import com.fredde.flickrsearch.data.PhotoEntry;
+import com.fredde.flickrsearch.models.PhotoEntry;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;

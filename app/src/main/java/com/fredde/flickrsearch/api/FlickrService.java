@@ -1,6 +1,6 @@
 package com.fredde.flickrsearch.api;
 
-import com.fredde.flickrsearch.data.FlickrResponse;
+import com.fredde.flickrsearch.models.FlickrResponse;
 
 import java.util.Map;
 

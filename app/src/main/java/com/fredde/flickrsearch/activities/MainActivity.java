@@ -1,4 +1,4 @@
-package com.fredde.flickrsearch;
+package com.fredde.flickrsearch.activities;
 
 import android.app.ActivityOptions;
 import android.content.BroadcastReceiver;
@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
+import com.fredde.flickrsearch.R;
+import com.fredde.flickrsearch.activities.FullscreenActivity;
 import com.fredde.flickrsearch.fragment.PhotoSearchFragment;
 import com.fredde.flickrsearch.services.PhotoSearchService;
 
@@ -112,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements PhotoSearchFragme
             View statusBar = findViewById(android.R.id.statusBarBackground);
             View navigationBar = findViewById(android.R.id.navigationBarBackground);
             View toolbar = findViewById(R.id.toolbar);
-            
+
             List<Pair<View, String>> pairs = new ArrayList<>();
             pairs.add(Pair.create(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME));
             pairs.add(Pair.create(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME));
