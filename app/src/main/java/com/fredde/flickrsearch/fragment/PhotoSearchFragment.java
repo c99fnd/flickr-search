@@ -117,7 +117,6 @@ public class PhotoSearchFragment extends Fragment implements OnQueryTextListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
         ListView listView = (ListView) rootView.findViewById(R.id.search_list);
