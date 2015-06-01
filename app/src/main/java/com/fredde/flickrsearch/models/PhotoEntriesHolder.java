@@ -36,6 +36,14 @@ public class PhotoEntriesHolder {
         return mPage;
     }
 
+    /**
+     * Sets the page number for the holder.
+     *
+     * @param mPage The page number
+     */
+    public void setPage(int mPage) {
+        this.mPage = mPage;
+    }
 
     /**
      * Get the total number of pages available for the current query.
@@ -81,5 +89,28 @@ public class PhotoEntriesHolder {
      */
     public String getStat() {
         return mStat;
+    }
+
+    /**
+     * Setters used for testing.
+     */
+    public void setPages(String pages) {
+        mPages = pages;
+    }
+
+    public void setPerPage(int perPage) {
+        mPerPage = perPage;
+    }
+
+    public void setTotal(String total) {
+        mTotal = total;
+    }
+
+    public void setPhotos(List<PhotoEntry> photos) {
+        mPhotos = photos;
+    }
+
+    public void setStat(String status) {
+        mStat = status;
     }
 }

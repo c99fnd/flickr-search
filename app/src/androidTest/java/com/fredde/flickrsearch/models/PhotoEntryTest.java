@@ -21,7 +21,6 @@ public class PhotoEntryTest extends TestCase {
 
     private PhotoEntry testPhotoEntry;
 
-
     public void setUp() throws Exception {
         super.setUp();
         testPhotoEntry = new PhotoEntry();
@@ -36,9 +35,6 @@ public class PhotoEntryTest extends TestCase {
         testPhotoEntry.setIsPublic(IS_PUBLIC);
         testPhotoEntry.setIsFriend(IS_FRIEND);
         testPhotoEntry.setIsFamily(IS_FAMILY);
-    }
-
-    public void tearDown() throws Exception {
     }
 
     public void testGetId() throws Exception {
