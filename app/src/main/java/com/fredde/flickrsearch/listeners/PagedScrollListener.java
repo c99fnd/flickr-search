@@ -52,7 +52,7 @@ public abstract class PagedScrollListener implements OnScrollListener {
 
         if (!mLoading && remaningItems < mLoadThreshold) {
             mLoading = true;
-            onLoadMore(mCurrentPage + 1);
+            fetchNextPage(mCurrentPage + 1);
         }
     }
 
@@ -61,5 +61,5 @@ public abstract class PagedScrollListener implements OnScrollListener {
      *
      * @param page The page to load.
      */
-    public abstract void onLoadMore(int page);
+    public abstract void fetchNextPage(int page);
 }

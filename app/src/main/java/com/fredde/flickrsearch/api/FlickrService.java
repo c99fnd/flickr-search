@@ -55,9 +55,25 @@ public interface FlickrService {
     public static final String CALLBACK = "nojsoncallback";
 
     /**
+     * API method Search
+     */
+    public static final String METHOD_SEARCH = "flickr.photos.search";
+
+    /**
+     * API response format JSON.
+     */
+    public static final String FORMAT_JSON = "json";
+
+    /**
+     * API response extras Tags.
+     */
+    public static final String EXTRAS_TAGS = "tags";
+
+    /**
      * The flickr service endpoint.
      */
     static final String ENDPOINT = "https://api.flickr.com/services";
+
 
     @GET("/rest")
     void getPhotos(@Query(METHOD) String method, @Query(API_KEY) String apiKey,

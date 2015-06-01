@@ -42,16 +42,17 @@ public class PhotoSearchService extends IntentService {
 
     private static final String NAME = "PhotoSearchService";
 
-    /* Flickr Service API option values. */
-    private static final String METHOD_VALUE = "flickr.photos.search";
+    /**
+     * The number of the first page of photo data.
+     */
+    public static final int FIRST_PAGE = 1;
 
+    /**
+     * API Options values.
+     */
     private static final String API_KEY_VALUE = "554ac5cebce4acd585f48e6255982909";
 
-    private static final String FORMAT_VALUE = "json";
-
     private static final String PER_PAGE_VALUE = "20";
-
-    private static final String EXTRAS_VALUE = "tags";
 
     private static final String CALLBACK_VALUE = "1";
 
@@ -66,11 +67,11 @@ public class PhotoSearchService extends IntentService {
      * Add paramerets to options map.
      */
     static {
-        sOptions.put(FlickrService.METHOD, METHOD_VALUE);
+        sOptions.put(FlickrService.METHOD, FlickrService.METHOD_SEARCH);
         sOptions.put(FlickrService.API_KEY, API_KEY_VALUE);
-        sOptions.put(FlickrService.FORMAT, FORMAT_VALUE);
+        sOptions.put(FlickrService.FORMAT, FlickrService.FORMAT_JSON);
         sOptions.put(FlickrService.PER_PAGE, PER_PAGE_VALUE);
-        sOptions.put(FlickrService.EXTRAS, EXTRAS_VALUE);
+        sOptions.put(FlickrService.EXTRAS, FlickrService.EXTRAS_TAGS);
         sOptions.put(FlickrService.CALLBACK, CALLBACK_VALUE);
     }
 
