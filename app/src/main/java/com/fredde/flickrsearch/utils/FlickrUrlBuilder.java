@@ -31,7 +31,7 @@ public class FlickrUrlBuilder {
      */
     public static String buildUrl(PhotoEntry photo){
        // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
-        String farm = photo.getFarm();
+        int farm = photo.getFarm();
         String server = photo.getServer();
         String id = photo.getId();
         String secret = photo.getSecret();
@@ -47,7 +47,7 @@ public class FlickrUrlBuilder {
      */
     public static String buildUrl(PhotoEntry photo, PhotoSize size){
         // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_{size}.jpg
-        String farm = photo.getFarm();
+        int farm = photo.getFarm();
         String server = photo.getServer();
         String id = photo.getId();
         String secret = photo.getSecret();

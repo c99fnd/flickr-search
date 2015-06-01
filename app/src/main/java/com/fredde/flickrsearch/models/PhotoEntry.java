@@ -36,7 +36,7 @@ public class PhotoEntry extends RealmObject implements Serializable {
     /**
      * Farm.
      */
-    private String farm;
+    private int farm;
 
     /**
      * Title of this photo.
@@ -150,7 +150,7 @@ public class PhotoEntry extends RealmObject implements Serializable {
      *
      * @return the farm.
      */
-    public String getFarm() {
+    public int getFarm() {
         return farm;
     }
 
@@ -159,7 +159,7 @@ public class PhotoEntry extends RealmObject implements Serializable {
      *
      * @param farm The farm to set.
      */
-    public void setFarm(String farm) {
+    public void setFarm(int farm) {
         this.farm = farm;
     }
 
