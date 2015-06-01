@@ -28,18 +28,58 @@ public class PhotoEntriesHolder {
     private String mStat;
 
     /**
+     * Returns the page number for the holder.
      *
-     * @return
+     * @return The page number.
+     */
+    public int getPage() {
+        return mPage;
+    }
+
+
+    /**
+     * Get the total number of pages available for the current query.
+     *
+     * @return Total number of pages.
+     */
+    public String getPages() {
+        return mPages;
+    }
+
+
+    /**
+     * Gets the number of {@link PhotoEntry}s per page for the current query.
+     *
+     * @return The number of {@link PhotoEntry}s per page.
+     */
+    public int getPerPage() {
+        return mPerPage;
+    }
+
+    /**
+     * Returns the total number of {@link PhotoEntry}s matching the query.
+     *
+     * @return The number matching the query.
+     */
+    public String getTotal() {
+        return mTotal;
+    }
+
+    /**
+     * Returns a list of photo {@link PhotoEntry}s held by this holder.
+     *
+     * @return A list of {@link PhotoEntry}s
      */
     public List<PhotoEntry> getPhotos() {
         return mPhotos;
     }
 
     /**
+     * Returns the status for the query.
      *
-     * @return
+     * @return String "ok" if the query was a success. "fail" otherwise.
      */
-    public String getStat(){
+    public String getStat() {
         return mStat;
     }
 }
