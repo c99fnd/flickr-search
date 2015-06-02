@@ -1,12 +1,13 @@
 package com.fredde.flickrsearch.activities;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.ImageView;
-
 import com.fredde.flickrsearch.R;
 import com.fredde.flickrsearch.models.PhotoEntry;
 import com.squareup.picasso.Picasso;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 
 import io.realm.Realm;
 
@@ -22,6 +23,11 @@ public class FullscreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fullscreen_view);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
 
         String id = getIntent().getStringExtra(EXTRA_PHOTO_ID);
         ImageView view = (ImageView) findViewById(R.id.fullscreen_view_image);

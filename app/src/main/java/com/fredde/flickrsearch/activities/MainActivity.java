@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
             @Override
             public void fetchNextPage(int page) {
                 fetchPhotoData(mLastQuery, page);
-
             }
         });
         listView.setAdapter(mAdapter);
@@ -158,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
 
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
     @Override
     public boolean onQueryTextSubmit(String query) {
         mSearchView.clearFocus();
-        fetchPhotoData(query,PhotoSearchService.FIRST_PAGE);
+        fetchPhotoData(query, PhotoSearchService.FIRST_PAGE);
         mLastQuery = query;
         return true;
     }
@@ -231,7 +231,8 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
     private RealmResults<PhotoEntry> getPhotosFromDb(@Nullable String query) {
         RealmResults<PhotoEntry> res;
         if (query != null) {
-            res = mRealm.where(PhotoEntry.class).contains("tags", query.toLowerCase()).findAll();
+            res = mRealm.where(PhotoEntry.class).contains("tags", query.toLowerCase())
+                    .findAll();
         } else {
             res = mRealm.where(PhotoEntry.class).findAll();
         }
