@@ -206,16 +206,18 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
             View toolbar = findViewById(R.id.toolbar);
 
             List<Pair<View, String>> pairs = new ArrayList<>();
-            pairs.add(Pair.create(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME));
-            pairs.add(
-                    Pair.create(navigationBar, Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME));
             pairs.add(Pair.create(toolbar, toolbar.getTransitionName()));
             pairs.add(Pair.create(image, image.getTransitionName()));
+            pairs.add(Pair.create(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME));
+            /* Navigation bar is null in landscape and will not be a part of the transition. */
+            if (navigationBar != null) {
+                pairs.add(Pair.create(navigationBar,
+                        Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME));
+            }
 
             Bundle options = ActivityOptions
                     .makeSceneTransitionAnimation(this, pairs.toArray(new Pair[pairs.size()]))
                     .toBundle();
-
             startActivity(intent, options);
         } else {
             startActivity(intent);
@@ -231,8 +233,7 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
     private RealmResults<PhotoEntry> getPhotosFromDb(@Nullable String query) {
         RealmResults<PhotoEntry> res;
         if (query != null) {
-            res = mRealm.where(PhotoEntry.class).contains("tags", query.toLowerCase())
-                    .findAll();
+            res = mRealm.where(PhotoEntry.class).contains("tags", query.toLowerCase()).findAll();
         } else {
             res = mRealm.where(PhotoEntry.class).findAll();
         }
