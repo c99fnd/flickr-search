@@ -25,33 +25,18 @@ public class FlickrUrlBuilder {
     }
 
     /**
+     * Creates a flickr photo url for a given {@link PhotoEntry}.
      *
-     * @param photo
-     * @return
+     * @param photo The photo entry to create the url for.
      */
-    public static String buildUrl(PhotoEntry photo){
-       // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+    public static void createImageUrl(PhotoEntry photo) {
+        // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
         int farm = photo.getFarm();
         String server = photo.getServer();
         String id = photo.getId();
         String secret = photo.getSecret();
+        String url = HEAD + FARM + farm + TAIL + server + "/" + id + "_" + secret + JPG;
 
-        return HEAD+FARM+farm+TAIL+server+"/"+id+"_"+secret+JPG;
-    }
-
-    /**
-     *
-     * @param photo
-     * @param size
-     * @return
-     */
-    public static String buildUrl(PhotoEntry photo, PhotoSize size){
-        // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_{size}.jpg
-        int farm = photo.getFarm();
-        String server = photo.getServer();
-        String id = photo.getId();
-        String secret = photo.getSecret();
-
-        return HEAD+FARM+farm+TAIL+server+"/"+id+"_"+secret+"_"+size+JPG;
+        photo.setUrl(url);
     }
 }

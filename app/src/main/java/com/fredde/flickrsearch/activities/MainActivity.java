@@ -118,7 +118,8 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
             @Override
             public void onReceive(Context context, Intent intent) {
                 String query = intent.getStringExtra(PhotoSearchService.EXTRA_QUERY_STRING);
-                notifyQueryDataChanged(query);
+                RealmResults<PhotoEntry> results = getPhotosFromDb(query);
+                mAdapter.updateRealmResults(results);
             }
         };
         LocalBroadcastManager mgr = LocalBroadcastManager.getInstance(getApplicationContext());
@@ -165,7 +166,11 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        /** Update the list with data from Realm. **/
+        RealmResults<PhotoEntry> results = getPhotosFromDb(query);
+        mAdapter.updateRealmResults(results);
         mSearchView.clearFocus();
+
         fetchPhotoData(query, PhotoSearchService.FIRST_PAGE);
         mLastQuery = query;
         return true;
@@ -269,16 +274,5 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
         if (mSearchView != null) {
             mSearchView.setOnQueryTextListener(null);
         }
-    }
-
-    /**
-     * Called when the query data has been changed to notify the fragment that new data is
-     * needed to be fetched.
-     *
-     * @param query The query to use when fetching new data.
-     */
-    private void notifyQueryDataChanged(String query) {
-        RealmResults<PhotoEntry> results = getPhotosFromDb(query);
-        mAdapter.updateRealmResults(results);
     }
 }

@@ -132,16 +132,14 @@ public class PhotoSearchService extends IntentService {
      * @param query the search string.
      */
     private void queryApi(String query, int page) {
-        List<PhotoEntry> photos;
         FlickrResponse response = mApiService.getPhotos(sOptions, page, query);
-        photos = response.holder.getPhotos();
+        List<PhotoEntry> photos = response.holder.getPhotos();
+        Realm realm = Realm.getInstance(getApplicationContext());
 
         /* Build and set the image url to PhotoEntry */
         for (int i = 0; i < photos.size(); i++) {
-            photos.get(i).setUrl(FlickrUrlBuilder.buildUrl(photos.get(i)));
+            FlickrUrlBuilder.createImageUrl(photos.get(i));
         }
-
-        Realm realm = Realm.getInstance(getApplicationContext());
 
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(photos);
