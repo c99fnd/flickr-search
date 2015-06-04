@@ -74,6 +74,11 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
      */
     private SearchView mSearchView;
 
+    /**
+     * Listview containing search results.
+     */
+    private ListView mListView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
         RealmResults<PhotoEntry> data = getPhotosFromDb(mLastQuery);
         mAdapter = new SearchResultAdapter(this, data, false);
 
-        ListView listView = (ListView)findViewById(R.id.search_list);
-        listView.setOnItemClickListener(new OnItemClickListener() {
+        mListView = (ListView)findViewById(R.id.search_list);
+        mListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PhotoEntry photo = mAdapter.getItem(position);
@@ -101,13 +106,13 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
         });
 
         /* Scroll listener used for on-demand loading of data. */
-        listView.setOnScrollListener(new PagedScrollListener(DEFAULT_THRESHOLD) {
+        mListView.setOnScrollListener(new PagedScrollListener(DEFAULT_THRESHOLD) {
             @Override
             public void fetchNextPage(int page) {
                 fetchPhotoData(mLastQuery, page);
             }
         });
-        listView.setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
     }
 
     @Override
@@ -170,6 +175,10 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
         RealmResults<PhotoEntry> results = getPhotosFromDb(query);
         mAdapter.updateRealmResults(results);
         mSearchView.clearFocus();
+        /* Reset album list. */
+        if (results.size() > 0) {
+            mListView.setSelection(0);
+        }
 
         fetchPhotoData(query, PhotoSearchService.FIRST_PAGE);
         mLastQuery = query;
@@ -214,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
             pairs.add(Pair.create(toolbar, toolbar.getTransitionName()));
             pairs.add(Pair.create(image, image.getTransitionName()));
             pairs.add(Pair.create(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME));
+
             /* Navigation bar is null in landscape and will not be a part of the transition. */
             if (navigationBar != null) {
                 pairs.add(Pair.create(navigationBar,
