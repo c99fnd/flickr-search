@@ -1,19 +1,16 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/fullscreen_background"
-                tools:context=".FullscreenActivity">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:background="@color/fullscreen_background"
+       tools:context=".FullscreenActivity">
 
     <ImageView
         android:id="@+id/fullscreen_view_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:transitionName="image"/>
-    
+
     <include
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:layout_above="@+id/fullscreen_view_image"/>
-</RelativeLayout>
+        layout="@layout/toolbar"/>
+</merge>
