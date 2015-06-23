@@ -2,10 +2,10 @@
 <resources>
     <color name="fullscreen_background">#00000000</color>
 
-    <color name="primary">#673ab7</color>
-    <color name="primary_dark">#512da8</color>
-    <color name="accent">#ffff00</color>
-    <color name="text_primary">#ffffffff</color>
-    <color name="text_secondary">#00000000</color>
+    <color name="primary">#673AB7</color>
+    <color name="primary_dark">#512DA8</color>
+    <color name="accent">#FFC107</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#727272</color>
 
 </resources>
