@@ -1,11 +1,5 @@
 package com.fredde.flickrsearch.activities;
 
-import com.fredde.flickrsearch.R;
-import com.fredde.flickrsearch.adapters.SearchResultAdapter;
-import com.fredde.flickrsearch.listeners.PagedScrollListener;
-import com.fredde.flickrsearch.models.PhotoEntry;
-import com.fredde.flickrsearch.services.PhotoSearchService;
-
 import android.app.ActivityOptions;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,6 +23,12 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
+import com.fredde.flickrsearch.R;
+import com.fredde.flickrsearch.adapters.SearchResultAdapter;
+import com.fredde.flickrsearch.listeners.PagedScrollListener;
+import com.fredde.flickrsearch.models.PhotoEntry;
+import com.fredde.flickrsearch.services.PhotoSearchService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -213,22 +213,14 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
 
     private void startActivityWithTransition(Intent intent, View view) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
             /* Get the shared views. */
             View image = view.findViewById(R.id.search_list_item_image);
-            View statusBar = findViewById(android.R.id.statusBarBackground);
-            View navigationBar = findViewById(android.R.id.navigationBarBackground);
             View toolbar = findViewById(R.id.toolbar);
 
             List<Pair<View, String>> pairs = new ArrayList<>();
             pairs.add(Pair.create(toolbar, toolbar.getTransitionName()));
             pairs.add(Pair.create(image, image.getTransitionName()));
-            pairs.add(Pair.create(statusBar, Window.STATUS_BAR_BACKGROUND_TRANSITION_NAME));
-
-            /* Navigation bar is null in landscape and will not be a part of the transition. */
-            if (navigationBar != null) {
-                pairs.add(Pair.create(navigationBar,
-                        Window.NAVIGATION_BAR_BACKGROUND_TRANSITION_NAME));
-            }
 
             Bundle options = ActivityOptions
                     .makeSceneTransitionAnimation(this, pairs.toArray(new Pair[pairs.size()]))
