@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -79,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
      */
     private ListView mListView;
 
+    private Toolbar mToolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,17 +87,17 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
         setContentView(R.layout.search_view);
         mRealm = Realm.getInstance(this);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
         }
 
-         /* Restore the last search made before onDestory */
+        /* Restore the last search made before onDestory */
         mLastQuery = readSearchStringFromPrefs();
         RealmResults<PhotoEntry> data = getPhotosFromDb(mLastQuery);
         mAdapter = new SearchResultAdapter(this, data, false);
 
-        mListView = (ListView)findViewById(R.id.search_list);
+        mListView = (ListView) findViewById(R.id.search_list);
         mListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
 
         /* Find and setup the SearchView. */
         MenuItem item = menu.findItem(R.id.action_search);
-        mSearchView = (SearchView)item.getActionView();
+        mSearchView = (SearchView) item.getActionView();
         mSearchView.setQueryHint(getResources().getString(R.string.action_search));
         mSearchView.setOnQueryTextListener(this);
 
