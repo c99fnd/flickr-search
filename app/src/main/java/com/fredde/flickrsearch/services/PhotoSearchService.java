@@ -14,6 +14,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -26,6 +27,9 @@ import retrofit.RestAdapter;
 import retrofit.RestAdapter.Builder;
 import retrofit.RestAdapter.LogLevel;
 import retrofit.converter.GsonConverter;
+import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * Service that searches flicker and persists the result in a db.
@@ -134,12 +138,21 @@ public class PhotoSearchService extends IntentService {
     private void queryApi(String query, int page) {
         FlickrResponse response = mApiService.getPhotos(sOptions, page, query);
         List<PhotoEntry> photos = response.holder.getPhotos();
-        Realm realm = Realm.getInstance(getApplicationContext());
 
-        /* Build and set the image url to PhotoEntry */
-        for (int i = 0; i < photos.size(); i++) {
-            FlickrUrlBuilder.createImageUrl(photos.get(i));
-        }
+        /* Add url to each PhotoEntry received from flicker API. The Reactive X way. */
+        Observable.just(photos).flatMap(new Func1<List<PhotoEntry>, Observable<PhotoEntry>>() {
+            @Override
+            public Observable<PhotoEntry> call(List<PhotoEntry> photoEntries) {
+                return Observable.from(photoEntries);
+            }
+        }).subscribe(new Action1<PhotoEntry>() {
+            @Override
+            public void call(PhotoEntry photo) {
+                FlickrUrlBuilder.createImageUrl(photo);
+            }
+        });
+
+        Realm realm = Realm.getInstance(getApplicationContext());
 
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(photos);
