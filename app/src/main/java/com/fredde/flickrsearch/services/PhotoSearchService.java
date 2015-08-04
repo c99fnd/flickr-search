@@ -28,6 +28,7 @@ import retrofit.RestAdapter.Builder;
 import retrofit.RestAdapter.LogLevel;
 import retrofit.converter.GsonConverter;
 import rx.Observable;
+import rx.Subscriber;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
@@ -138,27 +139,34 @@ public class PhotoSearchService extends IntentService {
     private void queryApi(String query, int page) {
         FlickrResponse response = mApiService.getPhotos(sOptions, page, query);
         List<PhotoEntry> photos = response.holder.getPhotos();
+        final Realm realm = Realm.getInstance(getApplicationContext());
 
         /* Add url to each PhotoEntry received from flicker API. The Reactive X way. */
-        Observable.just(photos).flatMap(new Func1<List<PhotoEntry>, Observable<PhotoEntry>>() {
+        Observable.from(photos).doOnNext(new Action1<PhotoEntry>() {
             @Override
-            public Observable<PhotoEntry> call(List<PhotoEntry> photoEntries) {
-                return Observable.from(photoEntries);
+            public void call(PhotoEntry photoEntry) {
+                FlickrUrlBuilder.createImageUrl(photoEntry);
             }
-        }).subscribe(new Action1<PhotoEntry>() {
+        }).subscribe(new Subscriber<PhotoEntry>() {
             @Override
-            public void call(PhotoEntry photo) {
-                FlickrUrlBuilder.createImageUrl(photo);
+            public void onCompleted() {
+                Log.d("FlickrSearch", "onComplete");
+                realm.close();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d("FlickrSearch", "onError()");
+            }
+
+            @Override
+            public void onNext(PhotoEntry photoEntry) {
+                Log.d("FlickrSearch", "onNext()");
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(photoEntry);
+                realm.commitTransaction();
             }
         });
-
-        Realm realm = Realm.getInstance(getApplicationContext());
-
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(photos);
-        realm.commitTransaction();
-
-        realm.close();
 
         Intent intent = new Intent(BROADCAST_SEARCH_COMPLETED);
         intent.putExtra(EXTRA_QUERY_STRING, query);
