@@ -14,6 +14,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -26,6 +27,10 @@ import retrofit.RestAdapter;
 import retrofit.RestAdapter.Builder;
 import retrofit.RestAdapter.LogLevel;
 import retrofit.converter.GsonConverter;
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * Service that searches flicker and persists the result in a db.
@@ -134,18 +139,34 @@ public class PhotoSearchService extends IntentService {
     private void queryApi(String query, int page) {
         FlickrResponse response = mApiService.getPhotos(sOptions, page, query);
         List<PhotoEntry> photos = response.holder.getPhotos();
-        Realm realm = Realm.getInstance(getApplicationContext());
+        final Realm realm = Realm.getInstance(getApplicationContext());
 
-        /* Build and set the image url to PhotoEntry */
-        for (int i = 0; i < photos.size(); i++) {
-            FlickrUrlBuilder.createImageUrl(photos.get(i));
-        }
+        /* Add url to each PhotoEntry received from flicker API. The Reactive X way. */
+        Observable.from(photos).doOnNext(new Action1<PhotoEntry>() {
+            @Override
+            public void call(PhotoEntry photoEntry) {
+                FlickrUrlBuilder.createImageUrl(photoEntry);
+            }
+        }).subscribe(new Subscriber<PhotoEntry>() {
+            @Override
+            public void onCompleted() {
+                Log.d("FlickrSearch", "onComplete");
+                realm.close();
+            }
 
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(photos);
-        realm.commitTransaction();
+            @Override
+            public void onError(Throwable e) {
+                Log.d("FlickrSearch", "onError()");
+            }
 
-        realm.close();
+            @Override
+            public void onNext(PhotoEntry photoEntry) {
+                Log.d("FlickrSearch", "onNext()");
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(photoEntry);
+                realm.commitTransaction();
+            }
+        });
 
         Intent intent = new Intent(BROADCAST_SEARCH_COMPLETED);
         intent.putExtra(EXTRA_QUERY_STRING, query);

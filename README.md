@@ -2,4 +2,6 @@
 A simple application that searches flickr for images that has a speficied tag.
 The purpose of the project is to learn Retrofit and Realm (database).
 
-Todo: Add a fullscreen action layer and browsing ability to the fullscreen view.
+Todo: Add fullscreen action layer and browsing ability to the fullscreen view.
+
+Branch: Testing som Rx stuff.

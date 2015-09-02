@@ -174,6 +174,7 @@ public class MainActivity extends AppCompatActivity implements OnQueryTextListen
     public boolean onQueryTextSubmit(String query) {
         /** Update the list with data from Realm. **/
         RealmResults<PhotoEntry> results = getPhotosFromDb(query);
+
         mAdapter.updateRealmResults(results);
         mSearchView.clearFocus();
         /* Reset album list. */
